@@ -1,0 +1,6 @@
+<template>
+    <lightning-card title="Datatable on Opportunity" icon-name="standard:opportunity">
+<lightning-datatable if:true={OpportunitiesData.data} key-field="Id" data={OpportunitiesData.data}
+show-row-number-column hide-checkbox-colum columns={columns} onrowaction={handleRowAction}></lightning-datatable>
+    </lightning-card>
+</template>

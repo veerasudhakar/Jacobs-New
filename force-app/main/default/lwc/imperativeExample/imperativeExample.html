@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Imperative Functionality">
+        <lightning-button label="Show Opportunities" variant = "Success" onclick={handleChange}></lightning-button>
+        <template if:true={oppoData}>
+            <template for:each={oppoData} for:item="Opportunity">
+                <div key={Opportunity.Id}>{Opportunity.Name}</div>
+            </template>
+        </template>
+    </lightning-card>
+</template>

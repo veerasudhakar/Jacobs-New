@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Lightning Datatable on Sorting the Client Side">
+        <lightning-input label = "Search Account" value={searchKey} type="Search" placeholder="Account Name" onchange={handleChange}></lightning-input>
+        <lightning-datatable key-field="Id"
+                             columns={columns}
+                             data={accData}
+                             sorted-by={sortBy}
+                                     sorted-direction={sortDirection}
+                                     onsort={handleSortAccountData}
+                             hide-checkbox-column="true">
+                            </lightning-datatable>
+    </lightning-card>
+</template>

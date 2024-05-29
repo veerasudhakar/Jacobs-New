@@ -1,0 +1,66 @@
+<template>
+
+    <!-- Spinner -->
+
+    <div style="
+    margin-left: -12px;
+">
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+    </template>
+
+    <!-- Render once data has loaded -->
+    <template if:true={pageReady}>
+
+        <!--<h1 style="font-size: 16pt;">{nameForMyTeamHeader}</h1> -->
+
+        <div>
+
+            <!-- Tabs-->
+            <lightning-tabset active-tab-value={defaultTab} class="slds-clearfix">
+
+                <!-- Overview -->
+                <lightning-tab label="Overview" value="overview" onactive={handleActiveTab}>
+                    <c-tms-my-team-overview-button if:true={talentProfileSet} overview-button-visibility={overviewButtonVisibility} delegation-button-visibility={delegationButtonVisibility}></c-tms-my-team-overview-button>
+                    <c-tms-my-team-overview manager-talent-profile-id={managerTalentProfileId}></c-tms-my-team-overview>
+                </lightning-tab>
+
+                <!-- Skills & Experience -->
+                <lightning-tab if:true={showSkills} label="Skills" value="skills" onactive={handleActiveTab}>
+                    <c-tms-my-team-cards manager-talent-profile-id={managerTalentProfileId} object-name="TMS_Skill_Claim__c" grouped-by="teamMember"></c-tms-my-team-cards>
+                </lightning-tab>
+
+                <!-- Feedback -->
+                <lightning-tab label="Feedback" value="feedback" onactive={handleActiveTab}>
+                    <c-tms-my-team-cards manager-talent-profile-id={managerTalentProfileId} object-name="TMS_Feedback__c" grouped-by="teamMember"></c-tms-my-team-cards>
+                </lightning-tab>
+
+                <!-- Celebration -->
+                <lightning-tab label="Celebrations" value="celebration" onactive={handleActiveTab}>
+                    <c-tms-my-team-cards manager-talent-profile-id={managerTalentProfileId} object-name="TMS_Celebrate__c" grouped-by="teamMember"></c-tms-my-team-cards>
+                </lightning-tab>
+
+                <!-- Priorities -->
+                <lightning-tab label="Priorities" value="priorities" onactive={handleActiveTab}>
+                    <c-tms-my-team-cards manager-talent-profile-id={managerTalentProfileId} object-name="TMS_Priority__c" grouped-by="teamMember"></c-tms-my-team-cards>
+                </lightning-tab>
+
+                <!-- Annual e3 Conversation -->
+                <lightning-tab label="Annual e3 Conversation" value="annualE3" onactive={handleActiveTab} class="max-context">
+                    <c-tms-my-team-annual-e3 manager-talent-profile-id={managerTalentProfileId}></c-tms-my-team-annual-e3>
+                </lightning-tab>
+
+                <!-- Career Plan -->
+                <lightning-tab label="Career Plan" value="careerPlan" onactive={handleActiveTab}>
+                    <c-tms-my-team-career-plan manager-talent-profile-id={managerTalentProfileId} object-name="TMS_Priority__c" grouped-by="teamMember"></c-tms-my-team-career-plan>
+                </lightning-tab>
+
+                <!-- e3 Learning -->
+                <lightning-tab lwc:if={showLearningTab} label="Learning" value="learning" onactive={handleLearningTab} icon-name="utility:open">
+                </lightning-tab>
+
+            </lightning-tabset>
+        </div>
+    </template>
+</div>
+</template>

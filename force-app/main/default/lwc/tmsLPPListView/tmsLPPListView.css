@@ -1,0 +1,34 @@
+/* Import shared CSS */
+@import 'c/tmsCommunityCSS';
+
+.searchTable {
+    display: table;
+    width: 100%;
+  }
+
+.searchButtonContainer, .searchInputContainer {
+  display: table-cell;
+}
+
+.searchButtonContainer {
+  white-space: nowrap;
+}
+
+.searchInputContainer {
+  width: 100%;
+  padding-right: 5px;
+}
+
+.searchInput {
+    margin-right: 5px;
+} 
+
+.runningTotals {
+    font-weight: bold;
+    background-color : var(--lwc-colorBackgroundButtonBrand);
+    color: white;
+}
+
+.slds-color__background_gray-7 {
+    background-color: black !important;
+}

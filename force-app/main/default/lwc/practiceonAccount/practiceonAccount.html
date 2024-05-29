@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="This is Account Data">
+        <Lightning-input label = "Search" type="search" value={searchKey} onchange={handleSearch}></Lightning-input>
+        
+        <lightning-datatable key-field="Id"
+                             data={accdata}
+                             columns={columns}
+                             hide-checkbox-column="true"
+                             onrowselection={handleRowSelection}
+                             onrowaction={handleRowAction}
+                            >
+                            </lightning-datatable>
+                             
+
+        <!-- <template if:true={accdata}> 
+            <template for:each={accdata} for:item="account">
+                <div key={account.Id}>{account.Name}</div>
+            </template>
+        </template> -->
+    </lightning-card>
+</template>

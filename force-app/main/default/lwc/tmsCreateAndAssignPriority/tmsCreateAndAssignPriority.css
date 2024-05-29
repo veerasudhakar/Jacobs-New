@@ -1,0 +1,40 @@
+/* Import community CSS */
+@import 'c/tmsCommunityCSS';
+
+.override-background {
+    --sds-c-button-neutral-color-background: #000000;
+    --sds-c-button-neutral-color-border-hover: #292323;
+    --sds-c-button-text-color: white;
+}
+
+.title-header {
+    height: 100px;
+    background-color: #f7f6f2;
+    font-size: 32px;
+    /* vertical-align: middle; */
+    line-height: 100px;
+    padding-left: 30px;
+}
+
+.subtitle-header {
+    font-size: 18px;
+    padding-left: 30px;
+    padding-top: 30px;
+}
+
+.override-toggle {
+    --sds-c-checkbox-toggle-color-background: #D72850;
+    --sds-c-checkbox-toggle-color-background-focus: #D72850;
+    --sds-c-checkbox-toggle-color-background-checked: #007D55;
+    --sds-c-checkbox-toggle-color-background-checked-focus: #007D55;
+    --sds-c-checkbox-toggle-color-background-hover  : #007D55;
+    --sds-c-checkbox-toggle-color-background-checked-hover  : #D72850;
+}
+
+:host {
+    --slds-c-toast-color-background: #FFB41E;
+}
+
+.warning-text {
+    color: #FFB41E;
+}

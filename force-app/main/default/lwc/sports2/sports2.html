@@ -1,0 +1,97 @@
+<template>
+	<lightning-record-edit-form record-id={recordid} object-api-name="Sport__c"
+		onsuccess={handleSuccess}>
+		<lightning-accordion class="example-accordion" allow-multiple-sections-open>
+			<lightning-accordion-section name="Virat" label="Virat Details">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Are u like Virat?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_u_like_Virat__c" name='viratData'
+							variant="label-hidden" onchange={handleViratChange} required> </lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={viratData}>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>How many centuries he have in IPL?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="How_many_centuries_he_have_in_IPL__c" required={isViratRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>How many runs he scored in single Season?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="how_much_runs_he_scored_in_a_season__c" required={isViratRequired} variant="label-hidden">
+							</lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>who is virat favorite player in the Team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="who_is_virat_favourite_player__c" required={isViratRequired} variant="label-hidden">
+							</lightning-input-field>
+						</lightning-layout-item>
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+			<lightning-accordion-section name="ABD" label="Abd Details">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Are you like Abd?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_you_Like_Abd_yes_no__c"
+							variant="label-hidden" name="abdData" onchange={handleViratChange} required>
+						</lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={abdData}>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>What is Abd Full name?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="What_is_Abd_Full_Name__c" required={isAbdRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>How many centuries he have in total IPL Career?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="How_many_centuries_he_have_in_total_IPL__c" required={isAbdRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>How much runs he scored in a single season?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="how_much_runs_he_scored_in_a_season__c" required={isAbdRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+		</lightning-accordion>
+		<div class="slds-align_absolute-center">
+            <lightning-button variant="brand" label="Previous" title="Previous" class="slds-m-around_x-small" onclick={handlePrevious}></lightning-button>
+			<lightning-button class="slds-m-around_x-small" variant="brand" type="submit" name="update" label="Save & Next">
+			</lightning-button>
+		</div>
+	</lightning-record-edit-form>
+</template>

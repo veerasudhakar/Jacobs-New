@@ -1,0 +1,314 @@
+<template>
+    
+    <!--<lightning-card title="Incentive Program Planning" icon-name="custom:custom41">-->
+	<lightning-card title=" " icon-name=" ">
+        <lightning-button label="New" variant="brand" slot="actions" onclick={showNewPopup}></lightning-button>
+        <div class="slds-var-p-horizontal_medium">
+            <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+            </template>
+            <div style="display: inline-block" class="slds-var-m-left_x-small">
+                <div class="slds-grid slds-gutters_x-small">
+                    <div class="slds-col slds-p-around_none">
+                        <lightning-icon icon-name="utility:info_alt" size="xx-small" style="margin-left: -33px;"></lightning-icon>
+                    </div>
+                    <div class="slds-col">
+                        <div style="font-style: italic;margin-left: -25px;">
+                            Reminder: All amounts in the Incentive Programs are in USD
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <lightning-accordion class="list-view-accordion" allow-multiple-sections-open active-section-name={activeSections} style="
+            width: 1042px;margin-left: -33px;
+        ">
+       
+                <lightning-accordion-section name="filter" label="Select Filter">
+                    <div style="width: 100%">
+                        <lightning-layout pull-to-boundary="medium">
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <c-tms-custom-combobox  label="Fiscal Year"
+                                                        value={selectedFy}
+                                                        border-color="white"
+                                                        placeholder="Fiscal Year"
+                                                        options={grantFY}
+                                                        onchange={handleGrantFYChange}>
+                                </c-tms-custom-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <c-tms-custom-combobox  label="Planned/Not Planned"
+                                                        value={inOutPlan}
+                                                        border-color="white"
+                                                        placeholder="Planned/Not Planned"
+                                                        options={inOutPlanOptions}
+                                                        onchange={handleInOutPlanChange}>
+                                </c-tms-custom-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <c-tms-custom-lookup    label="Find User"
+                                                        placeholder="Search users (min 3 characters)"
+                                                        icon-name="standard:user"
+                                                        object-name="TMS_Talent_Profile__c"
+                                                        display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                                                        additional-fields="TMS_User__c"
+                                                        custom-result-div-css="max-height: 15rem; width: 100%; position: absolute; z-index: 9999; background-color: white; overflow-x: auto;"
+                                                        strip-inaccessible
+                                                        onselect={handleFindUserSearchKeyPress}>
+                                </c-tms-custom-lookup>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3" if:true={canViewAsUser}>
+                                <c-tms-custom-lookup    label="View User’s Hierarchy"
+                                                        placeholder="Search users (min 3 characters)"
+                                                        icon-name="standard:user"
+                                                        object-name="TMS_Talent_Profile__c"
+                                                        display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                                                        additional-fields="TMS_User__c"
+                                                        custom-result-div-css="max-height: 15rem; width: 100%; position: absolute; z-index: 9999; background-color: white; overflow-x: auto;"
+                                                        strip-inaccessible
+                                                        onselect={handleUserSearchKeyPress}>
+                                </c-tms-custom-lookup>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout pull-to-boundary="medium">
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <template if:true={lobList}>
+                                    <c-tms-multi-select-combobox    label="Line of Business"
+                                                                    placeholder="Line of Business"
+                                                                    options={lobList}
+                                                                    show-pills="true"
+                                                                    onselection={handleLobChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <template if:true={businessUnit}>
+                                    <c-tms-multi-select-combobox    label="Business Unit"
+                                                                    placeholder="Business Unit"
+                                                                    options={businessUnit}
+                                                                    show-pills="true"
+                                                                    onselection={handleBusinessUnitFilterChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <template if:true={subUnitList}>
+                                    <c-tms-multi-select-combobox    label="Business Sub Unit"
+                                                                    placeholder="Business Sub Unit"
+                                                                    options={subUnitList}
+                                                                    show-pills="true"
+                                                                    onselection={handleSubUnitFilterChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="3">
+                                <c-tms-multi-select-combobox    label="Accelerated Talent"
+                                                                placeholder="Accelerated Talent"
+                                                                options={acceleratedTalentList}
+                                                                show-pills="true"
+                                                                onselection={handleAcceleratedTalentChange}>
+                                </c-tms-multi-select-combobox>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <!-- <lightning-layout pull-to-boundary="medium">
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="1">
+                                <template if:true={lobList}>
+                                    <c-tms-multi-select-combobox    label="Line of Business"
+                                                                    placeholder="Line of Business"
+                                                                    options={lobList}
+                                                                    show-pills="true"
+                                                                    onselection={handleLobChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="2">
+                                <template if:true={businessUnit}>
+                                    <c-tms-multi-select-combobox    label="Business Unit"
+                                                                    placeholder="Business Unit"
+                                                                    options={businessUnit}
+                                                                    show-pills="true"
+                                                                    onselection={handleBusinessUnitFilterChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="2">
+                                <template if:true={businessUnit}>
+                                    <c-tms-multi-select-combobox    label="Business Sub Unit"
+                                                                    placeholder="Business Sub Unit"
+                                                                    options={subUnitList}
+                                                                    show-pills="true"
+                                                                    onselection={handleSubUnitFilterChange}>
+                                    </c-tms-multi-select-combobox>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small">
+                                <c-tms-custom-combobox  label="Fiscal Year"
+                                                        value={selectedFy}
+                                                        border-color="white"
+                                                        placeholder="Fiscal Year"
+                                                        options={grantFY}
+                                                        onchange={handleGrantFYChange}>
+                                </c-tms-custom-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small">
+                                <div style="width: 125px;">
+                                    <c-tms-custom-combobox  label="Planned/Not Planned"
+                                                            value={inOutPlan}
+                                                            border-color="white"
+                                                            placeholder="Planned/Not Planned"
+                                                            options={inOutPlanOptions}
+                                                            onchange={handleInOutPlanChange}>
+                                    </c-tms-custom-combobox>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="2">
+                                <c-tms-multi-select-combobox    label="Accelerated Talent"
+                                                                placeholder="Accelerated Talent"
+                                                                options={acceleratedTalentList}
+                                                                show-pills="true"
+                                                                onselection={handleAcceleratedTalentChange}>
+                                </c-tms-multi-select-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="2">
+                                <c-tms-custom-lookup    label="Find User"
+                                                        placeholder="Search users (min 3 characters)"
+                                                        icon-name="standard:user"
+                                                        object-name="TMS_Talent_Profile__c"
+                                                        display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                                                        additional-fields="TMS_User__c"
+                                                        custom-result-div-css="max-height: 15rem; width: 100%; position: absolute; z-index: 9999; background-color: white; overflow-x: auto;"
+                                                        strip-inaccessible
+                                                        onselect={handleFindUserSearchKeyPress}>
+                                </c-tms-custom-lookup>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="auto" padding="horizontal-small" size="2" if:true={canViewAsUser}>
+                                <c-tms-custom-lookup    label="View User’s Hierarchy"
+                                                        placeholder="Search users (min 3 characters)"
+                                                        icon-name="standard:user"
+                                                        object-name="TMS_Talent_Profile__c"
+                                                        display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                                                        additional-fields="TMS_User__c"
+                                                        custom-result-div-css="max-height: 15rem; width: 100%; position: absolute; z-index: 9999; background-color: white; overflow-x: auto;"
+                                                        strip-inaccessible
+                                                        onselect={handleUserSearchKeyPress}>
+                                </c-tms-custom-lookup>
+                            </lightning-layout-item>
+                        </lightning-layout> -->
+                    </div>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="table" label="List" style="width: 1011px;">
+                    <div style="height: 55vh;">
+                        <c-tms-custom-datatable
+                                        key-field="Id"
+                                        data={lppList}
+                                        columns={columns}
+                                        wrap-text-max-lines="2" 
+                                        hide-checkbox-column
+                                        sorted-by={sortedBy}
+                                        sorted-direction={sortDirection}
+                                        onsort={handleSort}
+                                        onloadmore={handleLoadMore}
+                                        onsave={handleInlineSave}
+                                        draft-values={draftValues}
+                                        enable-infinite-loading></c-tms-custom-datatable>
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+
+            
+            <!-- <div style="height: 940px;"> -->
+            
+            <br/>
+            <div style="display: inline-block" class="slds-var-m-left_x-small slds-var-m-bottom_small">
+                <div class="slds-grid slds-gutters_x-small">
+                    <div class="slds-col slds-p-around_none">
+                        <lightning-icon icon-name="utility:info_alt" size="xx-small" style="margin-left: -33px;"></lightning-icon>
+                    </div>
+                    <div class="slds-col">
+                        <div style="font-style: italic; margin-left: -25px;">
+                            Column totals only represent the sum of records you have visibility/access to. For aggregated totals of VPs & below refer to the <a href="https://jacobs1.lightning.force.com/analytics/dashboard/0FK3f0000008P3VGAU" target="_blank">dashboard</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+
+
+    <!-- Add New Member Modal -->
+    <c-lwc-modal class="modalNew" modal-size="medium" show-close onclosedialog={hideNewPopup}>
+        <div slot="header">
+            New Incentive Program Participant
+        </div>
+        <div slot="content">
+            <lightning-layout vertical-align="stretch" multiple-rows="true">
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <c-tms-custom-lookup    label="Participant"
+                                            placeholder="Search participant (min 3 characters)"
+                                            border-color="white"
+                                            required
+                                            icon-name="standard:user"
+                                            object-name="TMS_Talent_Profile__c"
+                                            display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                                            additional-fields="TMS_User__c"
+                                            custom-result-div-css="max-height: 15rem; width: 100%; position: absolute; z-index: 9999; background-color: white; overflow-x: auto;"
+                                            strip-inaccessible
+                                            onselect={handleLppPersonSelection}
+                                            onclear={clear}>
+                    </c-tms-custom-lookup>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <c-tms-custom-combobox  label="Grant Fiscal Year"
+                                            required
+                                            border-color="white"
+                                            value={selectedGrantFiscalYear}
+                                            placeholder="Fiscal Year"
+                                            options={grantFiscalYear}
+                                            onchange={handleGrantFiscalYearChange}>
+                    </c-tms-custom-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <lightning-input    type="number" 
+                                        label="LPP Plan %" 
+                                        value={lppPlanPercent} 
+                                        formatter="percent-fixed" 
+                                        onchange={handleLppPlanPercentChange}
+                                        step="0.1"></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <lightning-input    type="number" 
+                                        label="LLTI" 
+                                        value={lltiValue} 
+                                        onchange={handleLltiValueChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <c-tms-custom-combobox  label="Reason"
+                                            border-color="white"
+                                            value={selectedReason}
+                                            placeholder="Reason"
+                                            options={reasonPicklistOptions}
+                                            onchange={handleReasonChange}>
+                    </c-tms-custom-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" flexibility="auto" padding="around-small">
+                    <lightning-input    type="text" 
+                                        label="Comments"
+                                        onchange={handleCommentValueChange}></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div slot="footer">
+            <lightning-button   variant="brand"   
+                                label="Save" 
+                                title="Save" 
+                                onclick={save}></lightning-button>
+            <lightning-button   variant="neutral"   
+                                label="Cancel" 
+                                title="Cancel"                                                    
+                                class="slds-var-m-left_small"
+                                onclick={hideNewPopup}></lightning-button>
+        </div>
+    </c-lwc-modal>
+
+</template>

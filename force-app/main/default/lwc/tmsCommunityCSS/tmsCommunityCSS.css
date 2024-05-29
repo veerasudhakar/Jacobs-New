@@ -1,0 +1,55 @@
+/* Community Styling: Apply borders to field inputs */
+:host {
+
+    /* Don't apply to --sds-c-button-color-border because that will affect button-icons, instead use the variant versions */
+    --sds-c-button-neutral-color-border: #DDDDDD !important;
+    --sds-c-button-neutral-color-border-hover: #DDDDDD !important;
+    --sds-c-button-neutral-color-border-active: #DDDDDD !important;
+    --sds-c-button-brand-color-border: #DDDDDD !important;
+    --sds-c-button-brand-color-border-hover: #DDDDDD !important;
+    --sds-c-button-brand-color-border-active: #DDDDDD !important;
+    --sds-c-button-outline-brand-color-border: #DDDDDD !important;
+    --sds-c-button-outline-brand-color-border-hover: #DDDDDD !important;
+    --sds-c-button-outline-brand-color-border-active: #DDDDDD !important;
+    --sds-c-button-inverse-color-border: #DDDDDD !important;
+    --sds-c-button-inverse-color-border-hover: #DDDDDD !important;
+    --sds-c-button-inverse-color-border-active: #DDDDDD !important;
+    --sds-c-button-destructive-color-border: #DDDDDD !important;
+    --sds-c-button-destructive-color-border-hover: #DDDDDD !important;
+    --sds-c-button-destructive-color-border-active: #DDDDDD !important;
+    --sds-c-button-text-destructive-color-border: #DDDDDD !important;
+    --sds-c-button-text-destructive-color-border-hover: #DDDDDD !important;
+    --sds-c-button-text-destructive-color-border-active: #DDDDDD !important;
+    --sds-c-button-success-color-border: #DDDDDD !important;
+    --sds-c-button-success-color-border-hover: #DDDDDD !important;
+    --sds-c-button-success-color-border-active: #DDDDDD !important;
+
+    --sds-c-input-color-border: #DDDDDD !important;
+
+    --sds-c-textarea-color-border: #DDDDDD !important;
+
+    --sds-c-checkbox-color-border: #DDDDDD !important;
+
+    --sds-c-select-color-border: #DDDDDD !important;
+
+    /* Not supported yet */
+    --sds-c-combobox-color-border: #DDDDDD !important;
+
+    --sds-c-badge-inverse-color-background: black !important;
+
+    --slds-c-pill-color-border: #DDDDDD !important;
+    --slds-c-pill-action-color-border: #DDDDDD !important;
+    --slds-c-pill-error-color-border: red !important;
+    --slds-c-pill-error-color-border-active: red !important;
+
+}
+
+/* Community Styling: Borders */
+.slds-border_left, .slds-border_left, .slds-border_left, .slds-border_left {
+    border-color: #DDDDDD !important;
+}
+
+/* Community Styling: Apply border to standard buttons that aren't button icons */
+button:not(.slds-button_icon) {
+    border: 1px solid #DDDDDD !important;
+}

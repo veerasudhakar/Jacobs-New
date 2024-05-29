@@ -1,0 +1,117 @@
+/* Import community CSS */
+@import 'c/tmsCommunityCSS';
+
+.slds-path__nav .slds-is-lost {
+    background-color: #D72850;
+    border-color: #D72850;
+    background-image: none;
+}
+.slds-path__nav .slds-is-lost .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-lost:hover {
+    background-color: #D72850;
+    border-color: #D72850;
+    background-image: none;
+}
+.slds-path__nav .slds-is-lost:hover .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-lost::before {
+    background-color: #D72850;
+    border-color: #D72850;
+    background-image: none;
+}
+.slds-path__nav .slds-is-lost::after {
+    background-color: #D72850;
+    border-color: #D72850;
+    background-image: none;
+}
+
+.slds-path__nav .slds-is-current {
+    background-color: #231EDC;
+    border-color: #231EDC;
+    background-image: none;
+}
+.slds-path__nav .slds-is-current .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-current:hover {
+    background-color: #231EDC;
+    border-color: #231EDC;
+    background-image: none;
+}
+.slds-path__nav .slds-is-current:hover .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-current::before {
+    background-color: #231EDC;
+    border-color: #231EDC;
+    background-image: none;
+}
+.slds-path__nav .slds-is-current::after {
+    background-color: #231EDC;
+    border-color: #231EDC;
+    background-image: none;
+}
+
+.slds-path__nav .slds-is-complete {
+    background-color: #0AD287;
+    background-image: none;
+}
+.slds-path__nav .slds-is-complete .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-complete:hover {
+    background-color: #0AD287;
+    border-color: #0AD287;
+    background-image: none;
+}
+.slds-path__nav .slds-is-complete:hover .slds-path__title {
+    color: white;
+    transform: none;
+}
+.slds-path__nav .slds-is-complete::before {
+    background-color: #0AD287;
+    border-color: #0AD287;
+    background-image: none;
+}
+.slds-path__nav .slds-is-complete::after {
+    background-color: #0AD287;
+    border-color: #0AD287;
+    background-image: none;
+}
+
+.slds-path__nav .slds-is-incomplete {
+    background-color: #C9C0C9;
+    border-color: #C9C0C9;
+    background-image: none;
+}
+.slds-path__nav .slds-is-incomplete .slds-path__title {
+    color: black;
+    transform: none;
+}
+.slds-path__nav .slds-is-incomplete:hover {
+    background-color: #C9C0C9;
+    border-color: #C9C0C9;
+    background-image: none;
+}
+.slds-path__nav .slds-is-incomplete:hover .slds-path__title {
+    color: black;
+    transform: none;
+}
+.slds-path__nav .slds-is-incomplete::before {
+    background-color: #C9C0C9;
+    border-color: #C9C0C9;
+    background-image: none;
+}
+.slds-path__nav .slds-is-incomplete::after {
+    background-color: #C9C0C9;
+    border-color: #C9C0C9;
+    background-image: none;
+}

@@ -1,0 +1,80 @@
+/* Import community CSS */
+@import 'c/tmsCommunityCSS';
+/* Import talent profile CSS */
+@import 'c/tmsMyProfileCSS';
+.override-background {
+    --sds-c-button-neutral-color-background: #000000;
+    --sds-c-button-neutral-color-border-hover: #292323;
+    --sds-c-button-text-color: white;
+}
+
+.title-header {
+    height: 100px;
+    background-color: #f7f6f2;
+    font-size: 32px;
+    /* vertical-align: middle; */
+    line-height: 100px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+}
+
+/*.subtitle-header {
+    font-size: 18px;
+    padding-left: 30px;
+    padding-top: 30px;
+}*/
+
+.subtitle-header {
+    font-size: 18px;
+    padding-left: 0px;
+    padding-top: 30px;
+    font-weight: bold;
+}
+
+.section-header {
+    font-size: 18px;
+    padding-left: 0px;
+    font-weight: bold;
+}
+
+
+.saveButton{
+    float: right;
+}
+
+.warning-text {
+    color: #FFB41E;
+}
+
+.description-input{
+   
+    width: 100%;
+}
+
+:host{
+    --display-value: grid !important;
+    --grid-template-columns: 1fr 1fr !important;
+    --slds-c-toast-color-background: #FFB41E;
+}
+
+.slds-form-element__control{
+    display: var(--display-value);
+    grid-template-columns: var(--grid-template-columns);
+}
+/*
+.slds-form-element__control{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+}*/
+
+.horizontal-row{
+    border-top: 1px solid grey;
+}
+
+.priority-title{
+    font-size: 18px;
+}
+
+.priority-horizontal-row{
+    border-top: 0.2px solid grey;
+}

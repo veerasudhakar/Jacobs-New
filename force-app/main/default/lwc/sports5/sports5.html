@@ -1,0 +1,97 @@
+<template>
+	<lightning-record-edit-form record-id={recordid} object-api-name="Sport__c"
+		onsuccess={handleSuccess}>
+		<lightning-accordion class="example-accordion" allow-multiple-sections-open>
+			<lightning-accordion-section name="OtherThan team" label="Other than Teams Details">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Still are u like other than Above teams?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Still_are_u_like_other_than_Above_teams__c" name='otherthanTeamData'
+							variant="label-hidden" onchange={handleStillTeamChange} required> </lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={otherthanTeamData}>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>What is that another team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="What_is_that_another_team__c" required={isteamRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>what is that team Home Ground in IPL?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="what_is_that_Team_Home_Ground_in_IPL__c" required={isteamRequired} variant="label-hidden">
+							</lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>who is ur fav player in this team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="who_is_your_fav_player_in_this_Team__c" required={isteamRequired} variant="label-hidden">
+							</lightning-input-field>
+						</lightning-layout-item>
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+			<lightning-accordion-section name="Team" label="Above Team Captain">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>like the Above Team Captain?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="like_the_Above_Team_Captain__c"
+							variant="label-hidden" name="TeamLikeData" onchange={handleOtherTeamChange} required>
+						</lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={TeamLikeData}>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>who is the owner of this above team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="who_is_the_owner_of_this_above_team__c" required={iscaptainRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>Who is the Hardest Fan above team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="Who_is_the_Hardest_Fan_above_team__c" required={iscaptainRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>Who is favourite All Runder in this Team?<abbr class="slds-required" title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="Who_is_favourite_All_Runder_in_this_Team__c" required={iscaptainRequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+		</lightning-accordion>
+		<div class="slds-align_absolute-center">
+            <lightning-button variant="brand" label="Previous" title="Previous" class="slds-m-around_x-small" onclick={handlePrevious}></lightning-button>
+			<lightning-button class="slds-m-around_x-small" variant="brand" type="submit" name="update" label="Save & Next">
+			</lightning-button>
+		</div>
+	</lightning-record-edit-form>
+</template>

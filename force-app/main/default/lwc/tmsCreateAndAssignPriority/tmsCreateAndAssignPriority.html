@@ -1,0 +1,256 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </template>
+    <!-- title -->
+    <div class="title-header">{title}</div>
+    <!-- subtitle -->
+    <div class="subtitle-header">{subTitle}</div>
+    <!-- Assign Priority User Selection -->
+    <div>
+        <template if:true={isAssignPriority}>
+            <div class="slds-p-around_medium">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_5-of-12">
+                        <c-tms-custom-lookup label="Who would you like to assign a priority to?" placeholder="Search for an employee(s)"
+                            icon-name="standard:user" object-name="TMS_Talent_Profile__c"
+                            display-fields="Full_Name__c, Search_Summary__c, TMS_User__r.Email"
+                            additional-fields="TMS_User__c" strip-inaccessible onselect={handlePriorityOwnerChange}
+                            help-text="Please select a Direct or Delegated Reportee" onclear={clear}>
+                        </c-tms-custom-lookup>
+                    </div>
+                </div>
+                <div class="slds-p-top_small">
+                    <template if:true={isTalentsSelected}>
+                        <template for:each={selectedTalents} for:item="selectedTalent">
+                            <span key={selectedTalent.Id}>
+                                <!-- Only difference is has-error on lightining-pill -->
+                                <template if:true={selectedTalent.isInvalidUser}>
+                                    <lightning-pill label={selectedTalent.Name} data-id={selectedTalent.Id}
+                                        data-userid={selectedTalent.userId} has-error onremove={handleRemoveOfTalent}
+                                        href={selectedTalent.profileUrl}
+                                        onclick={handleClickOfPill}
+                                        data-navurl={selectedTalent.profileUrl}>
+                                        <lightning-avatar src={selectedTalent.profilePhotoUrl}
+                                            fallback-icon-name="standard:user" variant="circle"
+                                            alternative-text="User avatar">
+                                        </lightning-avatar>
+                                    </lightning-pill>
+                                </template>
+                                <!-- Only difference is has-error on lightining-pill -->
+                                <template if:false={selectedTalent.isInvalidUser}>
+                                    <lightning-pill label={selectedTalent.Name} data-id={selectedTalent.Id}
+                                        data-userid={selectedTalent.userId} onremove={handleRemoveOfTalent}
+                                        href={selectedTalent.profileUrl}
+                                        onclick={handleClickOfPill}
+                                        data-navurl={selectedTalent.profileUrl}>
+                                        <lightning-avatar src={selectedTalent.profilePhotoUrl}
+                                            fallback-icon-name="standard:user" variant="circle"
+                                            alternative-text="User avatar">
+                                        </lightning-avatar>
+                                    </lightning-pill>
+                                </template>
+                            </span>
+                        </template>
+                    </template>
+
+                    <template if:true={disableButton}>
+                        <div>
+                            {invalidUserSelectionErrorMessage}
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+    <!-- Form Fields -->
+    <div>
+        <lightning-record-edit-form object-api-name="TMS_Priority__c" record-type-id={priorityRecordTypeId}
+            layout-type="Full" density="comfy">
+            <lightning-layout multiple-rows>
+                <!-- Title - Name -->
+                <lightning-layout-item padding="horizontal-small" size="6">
+                    <div>
+                        <lightning-input type="Text" name="Title" label="Title" maxlength="80" data-apiname="Name"
+                            placeholder={placeHolders.Title} required="true" value={priorityData.Name}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <!-- Measure - TMS_Measure__c -->
+                <lightning-layout-item padding="horizontal-small" size="6">
+                    <div>
+                        <lightning-input type="Text" name="Measure" label="Measure" maxlength="100"
+                            data-apiname="TMS_Measure__c" placeholder={placeHolders.Measure} required="true"
+                            value={priorityData.TMS_Measure__c}
+                            field-level-help="The criteria used to determine when the priority has been achieved.">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+
+                <!-- Alignment - TMS_Alignment__c -->
+                <lightning-layout-item size="6">
+                    <div class="slds-p-left_x-small slds-p-right_x-small">
+                        <lightning-input-field field-name="TMS_Alignment__c" data-apiname="TMS_Alignment__c"
+                            required="true" value={priorityData.TMS_Alignment__c}>
+                        </lightning-input-field>
+                    </div>
+                </lightning-layout-item>
+
+                <!-- Expected date of Completion -  TMS_Expected_Date_of_completion__c -->
+                <lightning-layout-item padding="horizontal-small" size="6">
+                    <div>
+                        <lightning-input type="Date" name="Expected date of Completion"
+                            label="Expected date of Completion" placeholder={placeHolders.DateOfCompletion}
+                            data-apiname="TMS_Expected_Date_of_completion__c" required="true"
+                            value={priorityData.TMS_Expected_Date_of_completion__c}
+                            field-level-help="Date priority is expected to be completed." onchange={handleOnChangeOfDate}>
+                        </lightning-input>
+                    </div>
+                    <div if:true={isCreatedForYearMismatched}>
+                        <div class="warning-text">
+                            <span><lightning-icon icon-name="utility:warning" alternative-text="Warning" title="Warning" size="x-small" ></lightning-icon></span>
+                            <span>&nbsp; <b>Note:</b> The expected date of completion falls outside of the fiscal year (Oct. - Sept.) that this priority was created for.</span>
+                          </div>
+                        
+                    </div>
+                </lightning-layout-item>
+
+                <!-- Created for Year  -->
+                <lightning-layout-item padding="horizontal-small" size="6">
+                    <div>
+                        <lightning-input-field field-name="TMS_Created_for_Year__c"
+                            data-apiname="TMS_Created_for_Year__c" value={priorityData.TMS_Created_for_Year__c} required="true" onchange={handleOnChangeOfDate}>
+                        </lightning-input-field>
+                    </div>                    
+                </lightning-layout-item>
+
+                <!-- TMS_Priority_Accomplished_Date__c -->
+                <lightning-layout-item padding="horizontal-small" size="6">
+                    <div>
+                        <lightning-input type="Date" name="Accomplished Date" label="Accomplished Date"
+                            placeholder={placeHolders.DateOfAccomplished}
+                            data-apiname="TMS_Priority_Accomplished_Date__c"
+                            value={priorityData.TMS_Priority_Accomplished_Date__c}
+                            field-level-help="Date priority is accomplished.">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+
+                <!-- Status -->
+                <template if:true={isUpdate}>
+                    <lightning-layout-item padding="horizontal-small" size="6">
+                        <div>
+                            <!-- <lightning-input-field field-name="TMS_Priority_Status__c" data-apiname="TMS_Priority_Status__c"
+                                                    value={priorityData.TMS_Priority_Status__c}
+                                required="true">
+                            </lightning-input-field> -->
+
+                            <lightning-combobox options={priorityStatusPicklistValues}
+                                data-apiname="TMS_Priority_Status__c" value={priorityData.TMS_Priority_Status__c}
+                                required=true label="Status"></lightning-combobox>
+                        </div>
+                    </lightning-layout-item>
+                </template>
+
+                <!-- TMS_Simple_and_Specific_Details__c -->
+                <lightning-layout-item padding="horizontal-small" size="12">
+                    <div>
+                        <lightning-input-rich-text class="slds-has-error" label-visible="true" label="Description"
+                            placeholder={placeHolders.simpleDetails} data-apiname="TMS_Simple_and_Specific_Details__c"
+                            message-when-bad-input={errorMessageForRichText} valid={validityForRichText} required="true"
+                            value={priorityData.TMS_Simple_and_Specific_Details__c}>
+                        </lightning-input-rich-text>
+                    </div>
+                </lightning-layout-item>
+
+                <!-- TMS_Progress_Notes_Results__c -->
+                <template if:true={isUpdate}>
+                    <lightning-layout-item padding="horizontal-small" size="12">
+                        <div>
+                            <lightning-input-field field-name="TMS_Progress_Notes_Results__c"
+                                data-apiname="TMS_Progress_Notes_Results__c"
+                                value={priorityData.TMS_Progress_Notes_Results__c}>
+                            </lightning-input-field>
+                        </div>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </lightning-record-edit-form>
+    </div>
+    <!-- Share -->
+    <div class="slds-p-around_medium" style="display:flex; flex-direction: row;">
+        <label>Share </label> &nbsp; <lightning-helptext
+            content="Click this if you want to share with Everyone at Jacobs">
+        </lightning-helptext>
+        <lightning-input class="override-toggle slds-p-left_medium" variant="label-hidden" type="toggle"
+            name="is-shared" message-toggle-active={shared} message-toggle-inactive={notShared}
+            onchange={handleSharePriority} checked={priorityData.Priority_Share__c}>
+        </lightning-input>
+    </div>
+
+    <!-- Buttons -->
+    <div>
+        <div class="slds-grid">
+
+            <div class="slds-col slds-size_2-of-12">
+                <!-- Discard -->
+                <lightning-button variant="brand" class="override-background slds-float_left slds-p-around_medium"
+                    onclick={handleDiscard} title="Discard" label="Discard">
+                </lightning-button>
+            </div>
+
+            <div class="slds-col slds-size_6-of-12">
+                <!-- BLANK SPACE -->
+            </div>
+
+            <div class="slds-col slds-size_4-of-12">
+                <!-- Create Priority -->
+                <template if:true={isCreate}>
+                    <lightning-button variant="brand" class="override-background slds-float_right slds-p-around_medium"
+                        onclick={handleCreateSave} title="Create Priority" label="Create Priority">
+                    </lightning-button>
+                </template>
+                <!-- Edit Priority -->
+                <template if:true={isUpdate}>
+                    
+                    <!-- Save -->
+                    <lightning-button variant="brand" class="override-background slds-float_right slds-p-around_medium"
+                        onclick={handleUpdateSave} title="Update Priority" label="Update Priority">
+                    </lightning-button>
+
+                    <!-- Delete -->
+                    <lightning-button variant="brand" class="override-background slds-float_right slds-p-around_medium"
+                        onclick={showDeletedModal} title="Delete Priority" label="Delete Priority">
+                    </lightning-button>
+
+                </template>
+                <!-- Assign Priority -->
+                <template if:true={isAssignPriority}>
+                    <lightning-button variant="brand" class="override-background slds-float_right slds-p-around_medium"
+                        onclick={handleAssignPriority} title="Assign Priority" label="Assign Priority"
+                        disabled={disableAssignButton}>
+                    </lightning-button>
+                </template>
+
+                <!-- Save Draft -->
+                <template if:true={isCreate}>
+                    <lightning-button variant="brand" class="override-background slds-float_right slds-p-around_medium"
+                        onclick={handleSaveDraft} title="Save as Draft" label="Save as Draft">
+                    </lightning-button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- On DISCARD Are you sure modal -->
+    <c-lwc-are-you-sure class="discardConfirmModal" header="Are you sure?"
+        content="Are you sure you want to discard your changes" ok-label="Yes" cancel-label="No" onok={handleDiscardYes}
+        oncancel={handleDiscardNo}></c-lwc-are-you-sure>
+
+    <!-- On DELETE Are you sure modal -->
+    <c-lwc-are-you-sure class="deleteConfirmModal" header="Are you sure?"
+    content="This will delete the priority and can not be recovered." ok-label="Yes" cancel-label="No" onok={handleDeleteYes}
+    oncancel={handleDeleteNo}></c-lwc-are-you-sure>
+
+</template>

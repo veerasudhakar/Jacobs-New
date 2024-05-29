@@ -1,0 +1,105 @@
+<template>  
+    <div class="slds-box slds-theme_default">  
+        <div class="slds-theme_default">
+            <div class="slds-p-around_medium">
+                <lightning-progress-indicator type="path" current-step={selectedStep}>
+                    <lightning-progress-step label="Stage1" value="account" onclick={selectStepAccount}></lightning-progress-step>
+                    <lightning-progress-step label="Stage2" value="contact" onclick={selectStepContact}></lightning-progress-step>
+                    <lightning-progress-step label="Stage3" value="opportunity" onclick={selectStepOpportunity}></lightning-progress-step>
+                    <lightning-progress-step label="File Upload" value="FileUpload" onclick={selectStepFileUpload}></lightning-progress-step>
+                </lightning-progress-indicator>
+    
+               
+            </div>
+            </div>
+
+            <template if:true={hasError}>
+                <div class="slds-text-color_error">Please fill in all required fields before proceeding.</div>
+            </template>
+
+           
+      <template if:true={isAccountStep}>
+        <div class="form-group">
+            <lightning-input type="text" label="Name" onchange={onNameChange}></lightning-input> 
+        </div>
+        <div class="form-group">
+            <template if:true={TypePicklistValues.data}>
+                <lightning-combobox name="Type"
+                                    label="Type"
+                                    value={Type}
+                                    placeholder="-Select-"
+                                    options={TypePicklistValues.data.values}
+                                    onchange={onTypeChange} >
+                </lightning-combobox>
+          </template>
+        </div>
+        <div class="form-group">
+            <lightning-input type="tel" label="Phone" onchange={onPhoneChange}></lightning-input> 
+        </div>
+        <div class="form-group">
+            <lightning-input type="Number" label="AccountNumber" onchange={onAccountNumChange}></lightning-input> 
+        </div>
+      </template>
+      
+      <template if:true={isContactStep}>
+        <div class="form-group">
+            <template if:true={IndustryPicklistValues.data}>
+                <lightning-combobox name="Industry"
+                                    label="Industry"
+                                    value={Industry}
+                                    placeholder="-Select-"
+                                    options={IndustryPicklistValues.data.values}
+                                    onchange={onIndustryChange} >
+                </lightning-combobox>
+          </template>
+        </div>
+        <div class="form-group">
+            <lightning-textarea name="input3" label="Description" onchange={onDescriptionChange}></lightning-textarea> 
+            </div>
+        <div class="form-group">
+            <template if:true={RatingPicklistValues.data}>
+                <lightning-combobox name="Rating"
+                                    label="Rating"
+                                    value={Rating}
+                                    placeholder="-Select-"
+                                    options={RatingPicklistValues.data.values}
+                                    onchange={onRatingChange} >
+                </lightning-combobox>
+          </template>
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="Email__c" onchange={onEmailChange}></lightning-input>
+        </div>
+      </template>
+     
+      <template if:true={isOpportunityStep}>
+        <div class="form-group">
+            <lightning-input type="text" label="BillingCity" onchange={onBCityChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="BillingState" onchange={onBStateChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="BillingPostalCode" onchange={onBPostalChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="BillingCountry" onchange={onBCountryChange}></lightning-input>
+        </div>
+
+      </template>
+
+      <template if:true={isFileUpload}>
+        <div class="form-group">
+            <lightning-input type="file" onchange={onFileUpload} required name="uploadFile" label="Upload File">  
+            </lightning-input>  
+        </div>
+      </template>
+      
+        <div class="slds-m-vertical_medium">
+            <lightning-button label="Next" onclick={nextStep}></lightning-button>
+            <lightning-button label="Previous" onclick={previousStep}></lightning-button>  
+        <lightning-button label="Save" onclick={saveContact}>  
+        </lightning-button>  
+      </div>  
+    </div>  
+  </template>

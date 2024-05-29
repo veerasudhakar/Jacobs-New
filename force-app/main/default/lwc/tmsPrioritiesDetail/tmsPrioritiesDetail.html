@@ -1,0 +1,209 @@
+<template>
+
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+    </template>
+
+    <!-- Render once data has loaded -->
+    <template if:true={pageReady}>
+
+        <!-- Modal popup -->
+        <c-lwc-modal class="markAsAccomplished" onenter={handleMarkAsAccomplishedYes} onclosedialog={handleMarkAsAccomplishedCancel}>
+            <div slot="header">
+                Mark as Accomplished
+            </div>
+            <div slot="content" style="min-height: 100px;">
+        
+                <!-- Modal-friendly spinner -->
+                <div if:true={showSpinner}>
+                    <lightning-spinner variant="brand" size="small" class="spinner"></lightning-spinner>
+                </div>
+        
+                <p>Once this {priorityDAText} is marked as accomplished, it can no longer be edited.</p>
+
+                <lightning-input type="date" name="accomplishedDate" label="Accomplished Date" value={accomplishedDate} onchange={handleAccomplishedDate} required></lightning-input>
+
+                <lightning-input-rich-text
+                    label="Progress Notes &amp; Results"
+                    label-visible
+                    value={progressNotes}
+                    onchange={handleProgressNotes}
+                    required
+                >
+                </lightning-input-rich-text>
+        
+            </div>
+            <div slot="footer">
+        
+                <lightning-button label={modalSubmitLabel} variant={modalSubmitVariant} disabled={modalButtonsDisabled} onclick={handleMarkAsAccomplishedYes}></lightning-button>
+                &nbsp;&nbsp;
+                <lightning-button label={modalCancelLabel} variant={modalCancelVariant} disabled={modalButtonsDisabled} onclick={handleMarkAsAccomplishedCancel}></lightning-button>
+        
+            </div>
+        </c-lwc-modal>
+        
+		 <!-- style="background-image: linear-gradient(to right,#0176d3,#0176d3); color: white"
+        class="slds-var-m-bottom_small slds-var-m-top_small slds-var-p-around_x-small"> -->	
+		
+		<!-- #0176d3,#0176d3 -->
+		
+		<template if:true={isPriorityShared}> 
+    <div         
+		style="background-color: #3a49da; color: white; padding: 3px"
+        class="slds-var-m-bottom_small slds-var-m-top_small "> 
+        <table style="width: 100%">
+            <tr>
+                <td style="text-align: center">				
+                    This development action record is visible to all of Jacobs. 
+                </td>                
+            </tr>
+        </table>
+        
+    </div>
+	</template>
+		
+        <div class="slds-clearfix">
+            <div class="slds-float_right">
+                <template if:true={showEditButton}>
+                    <lightning-button label={editLabel} variant="brand" onclick={handleEditPriority}></lightning-button>
+                </template>
+                <template if:true={hideEditMessage}>
+                    {priorityDAText} is marked as accomplished, it can no longer be edited.
+                </template>
+            </div>
+			
+			<!--  <div if:true={isPriorityShared}> 
+			
+			<h1>This priority is shared with everyone....</h1>
+			</div>
+			 -->
+			 
+	
+	
+            <div>
+                <h1 style="font-size: 16pt; font-weight: bold;">{record.Name}</h1>
+            </div>
+			
+			
+		</div>
+
+        <lightning-tabset active-tab-value={activeTab}>
+        
+            <lightning-tab label="Details" value="details" title="Details" icon-name="" icon-assistive-text="" end-icon-name="" end-icon-alternative-text="">
+
+                <div class="slds-clearfix">
+                    <div class="slds-float_right slds-var-m-bottom_small" if:true={showMarkAccomplishedButton}>
+                        <lightning-button label="Mark as Accomplished" variant="brand" name="markAsAccomplished" onclick={handleShowMarkAsAccomplishedModal}></lightning-button>
+                    </div>
+                    <div>
+                        <p style="font-size: 14pt; font-weight: bold;" class="slds-var-m-bottom_xx-small">Progress</p>
+                    </div>
+                </div>
+
+                <div class="slds-path">
+                    <div class="slds-grid slds-path__track">
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+
+                                <!-- Loop through statuses to display -->
+                                <template
+                                    if:true={statuses}
+                                    for:each={statuses}
+                                    for:item="status"
+                                    for:index="index"
+                                    >
+                    
+                                    <!-- Can't put each <li> into its own sub-component because that breaks the CSS between the <ul> and the <li> -->
+                                    <li key={status.id} class={status.pathClass} role="presentation">
+                                        <div aria-selected={selected} class="slds-path__link" id={status.pathId} role="option" tabindex={status.tabIndex} style="cursor: default; z-index: 1;">
+                                            <span class="slds-path__stage">
+                                                <template if:true={status.selected}>
+                                                    <span class="slds-assistive-text">{selectedAssistiveText}</span>
+                                                </template>
+                                            </span>
+
+                                            <span
+                                            if:true={status.helpText}
+                                            class="slds-var-m-right_xx-small"
+                                            style="position:relative; top:-3px;"
+                                            >
+                                            <lightning-helptext content={status.helpText}></lightning-helptext>
+                                            </span>
+
+                                            <span class="slds-path__title">
+                                            {status.label}
+                                            </span>
+
+                                        </div>
+                                    </li>
+
+                                </template>
+
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Guidance for Success -->
+                <template if:false={isAccomplished}>
+                    <c-tms-annual-e3-instruction
+                        show
+                        >
+                        <p>
+                            <strong>Guidance for Success:</strong>
+                        </p>
+
+                        <p>
+                            During this stage, the  {priorityDAText} is being worked on and progress is being made. Throughout this time, updates should be provided in the Progress Notes &amp; Results section below the original specifications or in the Post (Share an Update) section to the right. @mentioning helps keep others informed and allows leaders to engage in the {priorityDAText}.
+                        </p>
+
+                    </c-tms-annual-e3-instruction>
+                </template>
+
+                <!-- Priority Details -->
+                <c-tms-card-details record-id={recordId} version="profile" location-page={locationPage}></c-tms-card-details>
+
+            </lightning-tab>
+        
+            <lightning-tab label="Activity" value="activity" title="activity" icon-name="" icon-assistive-text="" end-icon-name="" end-icon-alternative-text="">
+                
+                <p class="slds-text-heading_medium">Files</p>
+                <c-custom-file-preview
+                    record-id={recordId}
+                    show-refresh
+                    show-file-upload={canUploadFiles}
+                    show-delete={canUploadFiles}
+                    used-in-community
+                    >
+                    <div slot="instructions">
+                        <p class="slds-var-m-bottom_small"><i>Documents that are relevant to this {priorityDAText} can be uploaded here. Do not upload documents that should not be visible to those that have visibility to this record.</i></p>
+                    </div>
+                </c-custom-file-preview>
+
+                <div class="slds-var-m-top_large">
+                    <c-custom-field-history
+                        title="History"
+                        title-class="slds-text-heading_medium"
+                        object-api-name="TMS_Priority__c"
+                        history-object-api-name="TMS_Priority__History"
+                        parent-ids={recordId}
+                        parent-field-name="ParentId"
+                        strip-inaccessible
+                        show-refresh
+                        class="priorityHistory"
+                        >
+                    </c-custom-field-history>
+                </div>
+
+            </lightning-tab>
+        
+        </lightning-tabset>
+
+    </template>
+
+</template>

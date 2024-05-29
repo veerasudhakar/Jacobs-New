@@ -1,0 +1,92 @@
+<template>
+    <div class="slds-theme_default">
+        <div class="slds-p-around_medium">
+            <lightning-progress-indicator type="path" current-step={selectedStep}>
+                <lightning-progress-step label="Stage1" value="account" onclick={selectStepAccount}></lightning-progress-step>
+                <lightning-progress-step label="Stage2" value="contact" onclick={selectStepContact}></lightning-progress-step>
+                <lightning-progress-step label="Stage3" value="opportunity" onclick={selectStepOpportunity}></lightning-progress-step>
+                <lightning-progress-step label="File Upload" value="FileUpload" onclick={selectStepFileUpload}></lightning-progress-step>
+            </lightning-progress-indicator>
+
+           
+        </div>
+
+        <template if:true={hasError}>
+            <div class="slds-text-color_error">Please fill in all required fields before proceeding.</div>
+        </template>
+
+        <!-- Display fields for Account section -->
+        <template if:true={isAccountStep}>
+            <lightning-card title="Create Account Record" icon-name="standard:account">
+                <div class="form-group">
+                    <lightning-input label="Enter Account Name" name="accName" required="required" type="text" value={accRecord.Name} onchange={handleNameChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Enter Phone Number" name="accPhone" type="number" value={accRecord.Phone} onchange={handlePhoneChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Enter Account Type" name="accEmail" required="required" type="text" value={accRecord.Type} onchange={handleTypeChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Enter Industry" name="accIndustry" type="text" value={accRecord.Industry} onchange={handleIndustryChange}></lightning-input>
+                </div>
+            </lightning-card>
+        </template>
+        
+        <!-- Display fields for Contact section -->
+        <template if:true={isContactStep}>
+            <lightning-card title="Create Contact Record" icon-name="standard:contact">
+                <div class="form-group">
+                    <lightning-input label="Enter Account Rating" name="accRating" required="required" type="text" value={accRecord.Rating} onchange={handleRatingChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Enter AnnualRevenue" name="accAnnualRevenue" type="number" value={accRecord.AnnualRevenue} onchange={handleAnnualChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                <lightning-input label="Enter AccountNumber" name="accAccountNumber" required="required" type="number" value={accRecord.AccountNumber} onchange={handleNumberChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Enter BillingStreet" name="accBillingStreet" type="text" value={accRecord.BillingStreet} onchange={handleBillingChange}></lightning-input>
+                </div>
+            </lightning-card>
+        </template>
+
+        <!-- Display fields for Opportunity section -->
+        <template if:true={isOpportunityStep}>
+            <lightning-card title="Create Opportunity Record" icon-name="standard:opportunity">
+                <div class="form-group">
+                        <lightning-input label="Enter Account BillingCity" name="accBillingCity" required="required" type="text" value={accRecord.BillingCity} onchange={handleCityChange}></lightning-input>
+                    </div>
+                    <div class="form-group">
+                        <lightning-input label="Enter BillingState" name="accBillingState" type="text" value={accRecord.BillingState} onchange={handleStateChange}></lightning-input>
+                    </div>
+                    <div class="form-group">
+                    <lightning-input label="Enter BillingPostalCode" name="accBillingPostalCode" required="required" type="text" value={accRecord.BillingPostalCode} onchange={handlePostalChange}></lightning-input>
+                    </div>
+
+                     <div class="form-group">
+                    <lightning-input label="Enter BillingCountry" name="accBillingCountry" required="required" type="text" value={accRecord.BillingCountry} onchange={handleCountryChange}></lightning-input>
+                    </div>
+            </lightning-card>
+        </template>
+
+        <!--File Uplaod-->
+
+        <template if:true={isFileUpload}>
+            <lightning-file-upload 
+            label="Attach receipt" 
+            name="fileUploader" 
+            accept={acceptedFormats} 
+            record-id={recordId} 
+            onuploadfinished={handleUploadFinished} 
+            multiple> 
+    </lightning-file-upload> 
+        </template>
+
+        <div class="slds-m-vertical_medium">
+            <lightning-button label="Next" onclick={nextStep}></lightning-button>
+            <lightning-button label="Previous" onclick={previousStep}></lightning-button>
+            <lightning-button label="Submit" onclick={handleSave} variant="brand"></lightning-button>
+        </div>
+    </div>
+</template>

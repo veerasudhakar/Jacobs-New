@@ -1,0 +1,1059 @@
+<template>
+  <!-- Spinner -->
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="large"
+      variant="brand"
+    ></lightning-spinner>
+  </template>
+
+  <template if:true={isInitialDataLoaded}>
+    <template if:false={haveCareerPlanRecordAccess}>
+      <br />
+      <h1><b>You do not have access to the data on this page.</b></h1>
+    </template>
+
+    <template if:true={haveCareerPlanRecordAccess}>
+      <template if:true={showCreateDevelopmentActivityForm}>
+        <div class="subtitle-header">{developmentActivities}</div>
+
+        <lightning-card title="Development Action Details">
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input
+                type="text"
+                class="title slds-col"
+                label="Title"
+                placeholder="Enter the title"
+                required="true"
+                onchange={handleTitleChange}
+              >
+              </lightning-input>
+
+              <!-- <lightning-input type="text" value={editedPriority.Name} class="titleNameupdate slds-col "
+								label="Title" required="true" onchange={handleTitleValueChange}>
+							</lightning-input> -->
+              <!--<lightning-combobox class="alignment slds-col" label="Alignment" options={alignmentValues}
+								required="true" onchange={handelAlignment}></lightning-combobox>-->
+              <!-- <lightning-combobox class="alignment slds-col" label="Alignment" options={alignmentValues}
+								required="true" onchange={handelAlignment}></lightning-combobox>	
+
+								<lightning-combobox class="alignment slds-col" label="Focus elements" options={focuselementsValues}
+								required="true" onchange={handelFocusAlignment}></lightning-combobox> -->
+
+              <lightning-combobox
+                class="alignmentadd slds-col"
+                label="Alignment"
+                options={alignmentValues}
+                required="true"
+                onchange={handelAlignmentValue}
+              ></lightning-combobox>
+
+              <template if:true={showFocusElements}>
+                <lightning-combobox
+                  class="focuselementsadd slds-col"
+                  label="Focus elements"
+                  options={focuselementsValuesSelected}
+                  required="true"
+                  onchange={handelFocusValue}
+                ></lightning-combobox>
+              </template>
+
+              <lightning-combobox
+                class="status slds-col"
+                label="Status"
+                options={daStatusOptions}
+                required="true"
+                onchange={handelStatus}
+              ></lightning-combobox>
+
+              <!-- <lightning-input type="date" class="slds-col " label="Accomplished Date " value={createaccomplisheddate}
+							required="true"   onchange={handleAccomplishedDatecreatedChange}>
+							</lightning-input> -->
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-combobox
+                class="developmentType slds-col"
+                label="Development Type"
+                options={developmentValues}
+                placeholder="Determine a Measure for success"
+                required="true"
+                onchange={handleDevelopmentTypeChange}
+              >
+              </lightning-combobox>
+              <lightning-combobox
+                class="createdforYear slds-col"
+                label="Created for Year"
+                required="true"
+                options={yearOption}
+                onchange={handleChangeYear}
+              >
+              </lightning-combobox>
+
+              <!-- //<lightning-input type="date" class="expecteddateofcompletion  " label="Expected Date of Completion"
+								onchange={}> -->
+              <!-- </lightning-input> -->
+              <lightning-input
+                type="date"
+                label="Expected Date of Completion"
+                required="true"
+                class="expecteddateofcompletion slds-col"
+                value={createExpectedDate}
+                onchange={handleExpectedDateofCompletionChange}
+              ></lightning-input>
+            </div>
+          </div>
+          <div class="description-input">
+            <lightning-textarea
+              class="description slds-col"
+              name="Description"
+              label="Description"
+              placeholder="Simple and specific details about this Priority."
+              onchange={handleDescription}
+            >
+            </lightning-textarea>
+            <!-- <lightning-textarea class="progressnotesresults slds-col" name="ProgressNoteResult" label="Progress Notes & Result"
+							placeholder="Simple and specific details about this Priority." onchange={handleProgressNoteResult}>
+						</lightning-textarea> -->
+            <br />
+            <div class="slds-float_left">
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                label="Discard"
+                type="reset"
+                onclick={handleDevelopmentActivityCancel}
+              >
+              </lightning-button>
+            </div>
+            <div class="slds-float_right">
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                type="submit"
+                name="Save as Draft"
+                label="Save as Draft"
+                onclick={handleDevelopmentActivityDraft}
+              ></lightning-button>
+              &nbsp;&nbsp;&nbsp;
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                name="Create Activity"
+                label="Create Action"
+                onclick={handledevelopmentActivityCreate}
+              >
+              </lightning-button>
+            </div>
+          </div>
+        </lightning-card>
+        <hr class="horizontal-row" />
+      </template>
+      <!-- Edit Development Activities-->
+      <template if:true={showEditDevelopmentActivities}>
+        <div class="subtitle-header">{editDevelopmentActivities}</div>
+        <lightning-card title="Development Action Details">
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input
+                type="text"
+                value={editedPriority.Name}
+                class="titleNameupdate slds-col"
+                label="Title"
+                required="true"
+                onchange={handleTitleValueChange}
+              >
+              </lightning-input>
+              <lightning-combobox
+                class="alignmentValueupdate slds-col"
+                label="Alignment"
+                value={editedPriority.TMS_Alignment__c}
+                options={alignmentValues}
+                required="true"
+                onchange={handelAlignmentValue}
+              ></lightning-combobox>
+
+              <template if:true={showFocusElements}>
+                <lightning-combobox
+                  class="focuselementsValueupdate slds-col"
+                  label="Focus elements"
+                  value={editedPriority.TMS_Focus_elements__c}
+                  options={focuselementsValuesSelected}
+                  required="true"
+                  onchange={handelFocusValue}
+                ></lightning-combobox>
+              </template>
+
+              <lightning-combobox
+                class="statusValueupdate slds-col"
+                label="status"
+                value={editedPriority.TMS_Priority_Status__c}
+                options={statusValues}
+                required="true"
+                onchange={handelstatusValue}
+              ></lightning-combobox>
+
+              <lightning-input
+                type="date"
+                value={editedPriority.TMS_Expected_Date_of_completion__c}
+                class="Expectedupdateupdate slds-col"
+                label="Expected date of Completion"
+                field-level-help="Date priority is expected to be completed."
+                onchange={handleexpecteddateValueChange1}
+              >
+              </lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-combobox
+                class="developmentupdate slds-col"
+                label="Development Type"
+                options={developmentValues}
+                value={editedPriority.TMS_Development_Type__c}
+                required="true"
+                onchange={handleDevelopmentTypeValue}
+              >
+              </lightning-combobox>
+              <lightning-combobox
+                class="createdYearupdate slds-col"
+                label="Created for Year"
+                required="true"
+                options={yearOption}
+                value={editedPriority.TMS_Created_for_Year__c}
+                onchange={handleCreatedYear}
+              >
+              </lightning-combobox>
+
+              <lightning-input
+                type="date"
+                value={editedPriority.TMS_Priority_Accomplished_Date__c}
+                class="accomplishDate slds-col"
+                label="Accomplished Date"
+                field-level-help="Date priority is accomplished."
+                onchange={handleAccomplishedDateEditchange}
+              >
+              </lightning-input>
+            </div>
+          </div>
+          <div class="description-input">
+            <lightning-textarea
+              class="descriptionupdate slds-col"
+              name="Description"
+              label="Description"
+              value={editedPriority.TMS_Simple_and_Specific_Details__c}
+              onchange={handleDescription}
+            >
+            </lightning-textarea>
+
+            <lightning-textarea
+              class="progressnotesresultsupdate slds-col"
+              name="ProgressNoteResult"
+              label="Progress Notes & Result"
+              value={editedPriority.TMS_Progress_Notes_Results__c}
+              onchange={handleProgressNoteResult}
+            >
+            </lightning-textarea>
+
+            <br />
+            <div class="slds-float_left">
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                label="Discard"
+                type="cancel"
+                onclick={handleReset}
+              >
+              </lightning-button>
+            </div>
+            <div class="slds-float_right">
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                type="submit"
+                name="Delete Activity"
+                label="Delete Action"
+                value={editedPriority.Id}
+                onclick={handleDelete}
+              >
+              </lightning-button>
+              &nbsp;&nbsp;&nbsp;
+              <lightning-button
+                class="override-background slds-float_left slds-p-around_medium"
+                variant="brand"
+                type="submit"
+                name="Update Activity"
+                label="Update Action"
+                value={editedPriority.Id}
+                onclick={handleUpdate}
+              >
+              </lightning-button>
+            </div>
+          </div>
+        </lightning-card>
+        <hr class="horizontal-row" />
+      </template>
+
+      <template if:true={showCareerPlanDetails}>
+        <!-- What Matters Most to Me -->
+        <div class="slds-p-left_medium slds-p-right_medium slds-p-top_xx-large">
+          <template if:true={LastDiscussedDateValue}>
+            <div class="section-header">
+              {CareerPlanLastDiscussedDate}&nbsp;&nbsp;&nbsp;
+              <lightning-formatted-date-time
+                value={LastDiscussedDateValue}
+                time-zone="UTC"
+                year="numeric"
+                month="short"
+                day="numeric"
+              ></lightning-formatted-date-time>
+              <hr class="horizontal-row" />
+            </div>
+          </template>
+
+          <div class="section-header">
+            {whatMattersMostToMe}&nbsp;<span
+              style="position: relative; top: -4px"
+              ><lightning-helptext
+                content={whatMattersMostToMeHelpText}
+                alternative-text="What Matters Most To Me"
+              ></lightning-helptext
+            ></span>
+
+            <template if:true={isEditable}>
+              <div
+                if:true={whatMattersMostToMeButton}
+                class="slds-float_right slds-text-body_small"
+              >
+                <c-tms-edit-save
+                  class="whatMattersMostToMeButtons"
+                  identifier="whatMattersMostToMe"
+                  onchange={handleSectionEdit}
+                ></c-tms-edit-save>
+              </div>
+            </template>
+          </div>
+          <lightning-icon
+            icon-name="utility:people"
+            alternative-text="Connected"
+            size="x-small"
+            title="small size"
+          >
+          </lightning-icon>
+          The career plan owner, their leadership, their career team members and
+          HR can see this section.<br />
+          <template if:true={whatMattersMostToMeSectionIsView}>
+            <div
+              if:true={currentUserCareerPlanningDetails.TMS_What_matters_most_to_me__c}
+              class="fieldValue"
+            >
+              <lightning-formatted-rich-text
+                value={selectedValuesWhatMattersMostToMe}
+              >
+              </lightning-formatted-rich-text>
+            </div>
+          </template>
+          <template if:false={whatMattersMostToMeSectionIsView}>
+            <p>Notes: Only allowed to select up to 3.</p>
+            <c-tms-multi-picklist
+              class="whatMattersMostToMeValue"
+              options={whatMattersMostToMeOptions}
+              enable-filter
+            >
+            </c-tms-multi-picklist>
+          </template>
+          <hr class="horizontal-row" />
+        </div>
+        <!-- TMS_Career_Aspirations__c -->
+        <div class="slds-p-left_medium slds-p-right_medium">
+          <div class="section-header">
+            {careerAspirations}&nbsp;<span style="position: relative; top: -4px"
+              ><lightning-helptext
+                content={careerAspirationsHelpText}
+                alternative-text="Career Aspirations"
+              ></lightning-helptext
+            ></span>
+
+            <template if:true={isEditable}>
+              <div
+                if:true={careerPlanningDetailsButton}
+                class="slds-float_right slds-text-body_small"
+              >
+                <c-tms-edit-save
+                  class="careerPlanningDetailsButtons"
+                  identifier="careerAspirations"
+                  onchange={handleSectionEdit}
+                ></c-tms-edit-save>
+              </div>
+            </template>
+          </div>
+          <lightning-icon
+            icon-name="utility:people"
+            alternative-text="Connected"
+            size="x-small"
+            title="small size"
+          >
+          </lightning-icon>
+          The career plan owner, their leadership, their career team members and
+          HR can see this section.<br />
+          <div
+            if:true={currentUserCareerPlanningDetails.TMS_Career_Aspirations__c}
+          >
+            <template if:true={careerAspirationsSectionIsView}>
+              <lightning-formatted-rich-text value={careerAspirationsValue}>
+              </lightning-formatted-rich-text>
+            </template>
+          </div>
+          <template if:false={careerAspirationsSectionIsView}>
+            <lightning-input-rich-text
+              class="careerPlanningDetailsValue"
+              value={careerAspirationsValue}
+              onchange={handleAspirationsChange}
+            >
+            </lightning-input-rich-text>
+          </template>
+          <hr class="horizontal-row" />
+        </div>
+        <!-- TMS_Strengths__c -->
+        <div class="slds-p-left_medium slds-p-right_medium">
+          <div class="section-header">
+            {strengths}&nbsp;<span style="position: relative; top: -4px"
+              ><lightning-helptext
+                content={strengthsHelpText}
+                alternative-text="Strengths"
+              ></lightning-helptext
+            ></span>
+
+            <template if:true={isEditable}>
+              <div
+                if:true={strengthsButton}
+                class="slds-float_right slds-text-body_small"
+              >
+                <c-tms-edit-save
+                  class="strengthsButtons"
+                  identifier="Strengths"
+                  onchange={handleSectionEdit}
+                >
+                </c-tms-edit-save>
+              </div>
+            </template>
+          </div>
+          <lightning-icon
+            icon-name="utility:people"
+            alternative-text="Connected"
+            size="x-small"
+            title="small size"
+          >
+          </lightning-icon>
+          The career plan owner, their leadership, their career team members and
+          HR can see this section.<br />
+          <div if:true={currentUserCareerPlanningDetails.TMS_Strengths__c}>
+            <template if:true={strengthSectionIsView}>
+              <lightning-formatted-rich-text value={StrengthsValue}>
+              </lightning-formatted-rich-text>
+            </template>
+          </div>
+          <template if:false={strengthSectionIsView}>
+            <lightning-input-rich-text
+              class="strengthsValue"
+              value={StrengthsValue}
+              onchange={handleStrengthsChange}
+            >
+            </lightning-input-rich-text>
+          </template>
+          <hr class="horizontal-row" />
+        </div>
+        <!-- TMS_Development_Opportunities__c -->
+        <div class="slds-p-left_medium slds-p-right_medium">
+          <div class="section-header">
+            {developmentOpportunitie}&nbsp;<span
+              style="position: relative; top: -4px"
+              ><lightning-helptext
+                content={developmentOpportunitieHelpText}
+                alternative-text="Development Opportunities"
+              ></lightning-helptext
+            ></span>
+
+            <template if:true={isEditable}>
+              <div
+                if:true={developmentOpportunitiesButton}
+                class="slds-float_right slds-text-body_small"
+              >
+                <c-tms-edit-save
+                  class="developmentOpportunitiesButtons"
+                  identifier="developmentOpportunities"
+                  onchange={handleSectionEdit}
+                >
+                </c-tms-edit-save>
+              </div>
+            </template>
+          </div>
+          <lightning-icon
+            icon-name="utility:people"
+            alternative-text="Connected"
+            size="x-small"
+            title="small size"
+          >
+          </lightning-icon>
+          The career plan owner, their leadership, their career team members and
+          HR can see this section.<br />
+          <div
+            if:true={currentUserCareerPlanningDetails.TMS_Development_Opportunities__c}
+          >
+            <template if:true={developmentOpportunitiesSectionIsView}>
+              <lightning-formatted-rich-text value={developmentOpportunities}>
+              </lightning-formatted-rich-text>
+            </template>
+          </div>
+          <template if:false={developmentOpportunitiesSectionIsView}>
+            <lightning-input-rich-text
+              class="developmentOpportunitiesValue"
+              value={developmentOpportunities}
+              onchange={handledevelopmentChange}
+            >
+            </lightning-input-rich-text>
+          </template>
+          <hr class="horizontal-row" />
+        </div>
+        <template if:true={isEditable}>
+          <!-- Career Development Documents -->
+          <div class="slds-p-left_medium slds-p-right_medium">
+            <div class="section-header">
+              {careerDevelopmentDocuments}&nbsp;<span
+                style="position: relative; top: -4px"
+                ><lightning-helptext
+                  content={careerDevelopmentDocumentsHelpText}
+                  alternative-text="Career Development Documents"
+                ></lightning-helptext
+              ></span>
+            </div>
+            <lightning-icon
+              icon-name="utility:people"
+              alternative-text="Connected"
+              size="x-small"
+              title="small size"
+            >
+            </lightning-icon>
+            The career plan owner, their leadership, their career team members
+            and HR can see this section.
+            <!-- <lightning-input type="file" accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+							label=" Add any relevent career planning documents here" onchange={openfileUpload}>
+						</lightning-input> -->
+            <c-custom-file-preview
+              record-id={recordCareerplanId}
+              show-refresh
+              show-file-upload
+              used-in-community
+              show-delete
+              onfilecount={handleFileCount}
+            ></c-custom-file-preview>
+
+            <hr class="horizontal-row" />
+          </div>
+        </template>
+        <!-- show career planning uploaded documents -->
+        <template if:false={isEditable}>
+          <!-- Career Development Documents -->
+          <div class="slds-p-left_medium slds-p-right_medium">
+            <div class="section-header">
+              {careerDevelopmentDocuments}&nbsp;<span
+                style="position: relative; top: -4px"
+                ><lightning-helptext
+                  content={careerDevelopmentDocumentsHelpText}
+                  alternative-text="Career Development Documents"
+                ></lightning-helptext
+              ></span>
+            </div>
+            <lightning-icon
+              icon-name="utility:people"
+              alternative-text="Connected"
+              size="x-small"
+              title="small size"
+            >
+            </lightning-icon>
+            The career plan owner, their leadership, their career team members
+            and HR can see this section.
+            <template if:true={showCareerDocumentList}>
+              <c-custom-file-preview
+                record-id={recordCareerplanId}
+                used-in-community
+                onfilecount={handleFileCount}
+              ></c-custom-file-preview>
+            </template>
+
+            <template if:false={showCareerDocumentList}>
+              <div slot="instructions">
+                <p class="slds-var-m-bottom_small">
+                  <i>No Career Development Document Found.</i>
+                </p>
+              </div>
+            </template>
+            <hr class="horizontal-row" />
+          </div>
+        </template>
+      </template>
+
+      <!-- Priorities of type Development Activities  -->
+      <div class="slds-p-left_medium slds-p-right_medium">
+        <template if:true={showDevelopmentActivityInReadMode}>
+          <div class="slds-clearfix">
+            <div class="section-header slds-var-m-bottom_small">
+              {developmentActivity}&nbsp;<span
+                style="position: relative; top: -4px"
+                ><lightning-helptext
+                  content={developmentActivityHelpText}
+                  alternative-text="Development Activity"
+                ></lightning-helptext
+              ></span>
+
+              <template if:true={isEditable}>
+                <div
+                  if:true={priorityButton}
+                  class="slds-float_right slds-text-body_small"
+                >
+                  <a onclick={handleOnAddClick} data-name="addPriorityButton">
+                    <lightning-icon
+                      icon-name="utility:edit"
+                      alternative-text="Add"
+                      size="xx-small"
+                      title="Add New Activity"
+                    >
+                    </lightning-icon>
+                    &nbsp; Add
+                  </a>
+                </div>
+              </template>
+            </div>
+          </div>
+          <div>
+            <lightning-icon
+              icon-name="utility:people"
+              alternative-text="Connected"
+              size="x-small"
+              title=""
+            >
+            </lightning-icon>
+            The career plan owner, their leadership, their career team members
+            and HR can see this section.
+          </div>
+          <template
+            if:true={developmentActivitiesDisplayList}
+            for:each={developmentActivitiesDisplayList}
+            for:item="priority"
+          >
+            <div key={priority.Id} class="slds-p-top_large">
+              <lightning-record-view-form
+                record-id={priority.Id}
+                object-api-name="TMS_Priority__c"
+              >
+                <div>
+                  <div>
+                    <span>
+                      <a
+                        onclick={navigateToPriorityRecord}
+                        class="priority-title"
+                        data-record-id={priority.Id}
+                        >{priority.Name}</a
+                      >
+                    </span>
+                    <template if:true={isEditable}>
+                      <span
+                        if:true={priorityAddButton}
+                        class="slds-float_right slds-text-body_small"
+                      >
+                        <a
+                          onclick={handleOnEditClick}
+                          data-priority-id={priority.Id}
+                        >
+                          <lightning-icon
+                            icon-name="utility:edit"
+                            alternative-text="Edit"
+                            size="xx-small"
+                            title="Edit"
+                          >
+                          </lightning-icon>
+                          &nbsp; Edit
+                        </a>
+                      </span>
+                    </template>
+                  </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                  <div
+                    if:true={priority.TMS_Alignment__c}
+                    class="slds-col slds-size_3-of-12"
+                  >
+                    <!-- <lightning-output-field field-name="TMS_Alignment__c" variant="stacked">
+										</lightning-output-field> -->
+                    <div class="fieldHeading">
+                      Alignment&nbsp;<span style="position: relative; top: -4px"
+                        ><lightning-helptext
+                          content={alignmentHelpText}
+                          alternative-text={alignmentHelpText}
+                        ></lightning-helptext
+                      ></span>
+                    </div>
+                    <div class="fieldValue">
+                      <lightning-formatted-rich-text
+                        value={priority.TMS_Alignment__c}
+                      >
+                      </lightning-formatted-rich-text>
+                    </div>
+                  </div>
+
+                  <div
+                    if:true={priority.TMS_Focus_elements__c}
+                    class="slds-col slds-size_3-of-12"
+                  >
+                    <div class="fieldHeading">
+                      Focus Elements&nbsp;<span
+                        style="position: relative; top: -4px"
+                        ><lightning-helptext
+                          content={focuselementsHelpText}
+                          alternative-text={focuselementsHelpText}
+                        ></lightning-helptext
+                      ></span>
+                    </div>
+                    <div class="fieldValue">
+                      <lightning-formatted-rich-text
+                        value={priority.TMS_Focus_elements__c}
+                      >
+                      </lightning-formatted-rich-text>
+                    </div>
+                  </div>
+
+                  <!-- <div if:true={priority.TMS_FOCUS_ELEMENT} class="slds-col slds-size_2-of-12">
+										
+										<div class="fieldHeading">Focus Elements</div>
+										<div class="fieldValue">
+											<lightning-formatted-rich-text value={priority.FocusValue}>
+											</lightning-formatted-rich-text>
+										</div>
+									</div> -->
+
+                  <div
+                    if:true={priority.TMS_Priority_Status__c}
+                    class="slds-col slds-size_2-of-12"
+                  >
+                    <!-- <lightning-output-field field-name="TMS_Priority_Status__c" variant="stacked">
+										</lightning-output-field> -->
+                    <div class="fieldHeading">Status</div>
+                    <div class="fieldValue">
+                      <lightning-formatted-rich-text
+                        value={priority.PriorityStatus}
+                      >
+                      </lightning-formatted-rich-text>
+                    </div>
+                  </div>
+                  <div
+                    if:true={priority.LastModifiedDate}
+                    class="slds-col slds-size_3-of-12"
+                  >
+                    <!-- <lightning-output-field field-name="LastModifiedDate" variant="stacked">
+										</lightning-output-field> -->
+                    <div class="fieldHeading">Last Modified Date</div>
+                    <div class="fieldValue">
+                      <lightning-formatted-date-time
+                        value={priority.LastModifiedDate}
+                        year="numeric"
+                        month="numeric"
+                        day="numeric"
+                        hour="2-digit"
+                        minute="2-digit"
+                      ></lightning-formatted-date-time>
+                    </div>
+                  </div>
+                  <div
+                    if:true={priority.TMS_Expected_Date_of_completion__c}
+                    class="slds-col slds-size_4-of-12"
+                  >
+                    <!-- <lightning-output-field field-name="TMS_Expected_Date_of_completion__c"
+											variant="stacked">
+										</lightning-output-field> -->
+                    <div class="fieldHeading">Expected Date of Completion</div>
+                    <div class="fieldValue">
+                      <lightning-formatted-date-time
+                        value={priority.TMS_Expected_Date_of_completion__c}
+                      >
+                      </lightning-formatted-date-time>
+                    </div>
+                  </div>
+                </div>
+              </lightning-record-view-form>
+            </div>
+          </template>
+          <template if:true={showMoreLessButtonStart}>
+            <div
+              class="slds-align_absolute-center"
+              if:true={showMoreLessButton}
+            >
+              <lightning-button
+                label="view more"
+                title="view more"
+                onclick={handleClickviewmore}
+                class="slds-m-top_small"
+              ></lightning-button>
+            </div>
+            <div
+              class="slds-align_absolute-center"
+              if:false={showMoreLessButton}
+            >
+              <lightning-button
+                label="show less"
+                title="show less"
+                onclick={handleClickshowless}
+                class="slds-m-top_small"
+              ></lightning-button>
+            </div>
+          </template>
+          <hr class="horizontal-row" />
+        </template>
+      </div>
+      <template if:true={showCareerPlanDetails}>
+        <!-- Market Alignment & Aspiration -->
+        <div class="slds-p-left_medium slds-p-right_medium">
+          <div class="section-header">
+            Market Alignment & Aspiration&nbsp;<span
+              style="position: relative; top: -4px"
+              ><lightning-helptext
+                content={marketAlignmentHelpText}
+                alternative-text="Market Alignment & Aspiration"
+              ></lightning-helptext
+            ></span>
+
+            <template if:true={isEditable}>
+              <div
+                if:true={talentEditButtons}
+                class="slds-float_right slds-text-body_small"
+              >
+                <c-tms-edit-save
+                  class="talentEditButton"
+                  identifier="talentProfile"
+                  onchange={handleSectionEdit}
+                >
+                </c-tms-edit-save>
+              </div>
+            </template>
+          </div>
+          <lightning-icon
+            icon-name="utility:people"
+            alternative-text="Connected"
+            size="x-small"
+            title="small size"
+          >
+          </lightning-icon>
+          The career plan owner, their leadership, their career team members and
+          HR can see this section.
+          <lightning-record-view-form
+            record-id={talentDetails.Id}
+            object-api-name="TMS_Talent_Profile__c"
+          >
+            <div class="slds-box slds-theme_default">
+              <div
+                class="slds-grid slds-wrap"
+                if:true={marketAlignmentAspiration}
+              >
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- <lightning-output-field field-name="Primary_Market_Alignment__c" variant="stacked">
+									</lightning-output-field> -->
+                  <div class="fieldHeading">
+                    Primary Market Alignment&nbsp;<span
+                      style="position: relative; top: -4px"
+                      ><lightning-helptext
+                        content={primaryMarketAlignmentHelpText}
+                        alternative-text={primaryMarketAlignmentHelpText}
+                      ></lightning-helptext
+                    ></span>
+                  </div>
+                  <div class="fieldValue">
+                    <lightning-formatted-rich-text
+                      value={talentDetails.Primary_Market_Alignment__c}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- <lightning-output-field field-name="Primary_Submarket_Alignment__c" variant="stacked">
+									</lightning-output-field> -->
+                  <div class="fieldHeading">
+                    Primary Submarket Alignment&nbsp;<span
+                      style="position: relative; top: -4px"
+                      ><lightning-helptext
+                        content={primarySubmarketAlignmentHelpText}
+                        alternative-text={primarySubmarketAlignmentHelpText}
+                      ></lightning-helptext
+                    ></span>
+                  </div>
+                  <div class="fieldValue">
+                    <lightning-formatted-rich-text
+                      value={talentDetails.Primary_Submarket_Alignment__c}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- <lightning-output-field field-name="Secondary_Market_Alignment__c" variant="stacked">
+									</lightning-output-field> -->
+                  <div class="fieldHeading">
+                    Secondary Market Alignment&nbsp;<span
+                      style="position: relative; top: -4px"
+                      ><lightning-helptext
+                        content={secondaryMarketAlignmentHelpText}
+                        alternative-text={secondaryMarketAlignmentHelpText}
+                      ></lightning-helptext
+                    ></span>
+                  </div>
+                  <div class="fieldValue">
+                    <lightning-formatted-rich-text
+                      value={talentDetails.Secondary_Market_Alignment__c}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- <lightning-output-field field-name="Secondary_Submarket_Alignment__c" variant="stacked">
+									</lightning-output-field> -->
+                  <div class="fieldHeading">
+                    Secondary Submarket Alignment&nbsp;<span
+                      style="position: relative; top: -4px"
+                      ><lightning-helptext
+                        content={secondarySubmarketAlignmentHelpText}
+                        alternative-text={secondarySubmarketAlignmentHelpText}
+                      ></lightning-helptext
+                    ></span>
+                  </div>
+                  <div class="fieldValue">
+                    <lightning-formatted-rich-text
+                      value={talentDetails.Secondary_Submarket_Alignment__c}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- <lightning-output-field field-name="Market_Aspiration__c" variant="stacked">
+									</lightning-output-field> -->
+                  <div class="fieldHeading">
+                    Market Aspiration&nbsp;<span
+                      style="position: relative; top: -4px"
+                      ><lightning-helptext
+                        content={marketAspirationHelpText}
+                        alternative-text={marketAspirationHelpText}
+                      ></lightning-helptext
+                    ></span>
+                  </div>
+                  <div class="fieldValue">
+                    <lightning-formatted-rich-text
+                      value={selectedmarketAspiration}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                  <!-- {developinCurrentMarketApi}&nbsp;
+									<lightning-icon icon-name="utility:info"
+										alternative-text="Connected" size="xx-small" title={developinCurrentMarketHelpText}>
+									</lightning-icon>
+									<br />
+									<p>{developinCurrentMarket}</p> -->
+                  <!-- <div class="fieldHeading">
+										{developinCurrentMarketApi}&nbsp;<span style="position:relative; top:-4px;"><lightning-helptext content={developinCurrentMarketHelpText} alternative-text={developinCurrentMarketApi}></lightning-helptext></span>
+									</div>
+									<div class="fieldValue">
+										<lightning-formatted-rich-text value={developinCurrentMarket}>
+										</lightning-formatted-rich-text>
+									</div> -->
+
+                  <!-- US-0009865  -->
+                  <br />
+                  <div class="fieldHeading">
+                    <lightning-input
+                      class="Develop_in_Current_Market"
+                      type="checkbox"
+                      label="Develop in Current Market"
+                      checked={developinCurrentMarket}
+                      disabled="true"
+                    >
+                    </lightning-input>
+                  </div>
+                </div>
+              </div>
+              <!--Edit Section-->
+              <div
+                class="slds-grid slds-wrap"
+                if:false={marketAlignmentAspiration}
+              >
+                <div class="slds-col slds-size_5-of-12">
+                  <lightning-combobox
+                    class="Primary_Market_Alignment"
+                    label="Primary Market Alignment"
+                    value={talentDetails.Primary_Market_Alignment__c}
+                    options={primaryMarketAlignment}
+                    onchange={handleprimaryMarketChange}
+                  >
+                  </lightning-combobox>
+                  <lightning-combobox
+                    class="Secondary_Market_Alignment"
+                    label="Secondary Market Alignment"
+                    value={talentDetails.Secondary_Market_Alignment__c}
+                    options={secondaryMarketAlignment}
+                    onchange={handlesecondaryMarketChange}
+                  >
+                  </lightning-combobox>
+                  <div>
+                    <p class="fieldHeading">Market Aspiration</p>
+                    <c-tms-multi-picklist
+                      class="marketAspiration"
+                      options={marketAspirationValue}
+                      enable-filter
+                    >
+                    </c-tms-multi-picklist>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12">&nbsp;</div>
+                <div class="slds-col slds-size_5-of-12">
+                  <lightning-combobox
+                    class="Primary_Submarket_Alignment"
+                    label="Primary Submarket Alignment"
+                    value={talentDetails.Primary_Submarket_Alignment__c}
+                    options={primarySubmarketAlignmentOptionsToDisplay}
+                    onchange={handlePrimarySubmarketAlignmentChange}
+                  >
+                  </lightning-combobox>
+                  <lightning-combobox
+                    class="Secondary_Submarket_Alignment"
+                    label="Secondary Submarket Alignment"
+                    value={talentDetails.Secondary_Submarket_Alignment__c}
+                    options={secondarySubmarketAlignmentOptionsToDisplay}
+                    onchange={handleSecondarySubmarketChange}
+                  >
+                  </lightning-combobox>
+
+                  <!--
+									 <input type="checkbox" name="options" id="checkbox-unique-id-81" value="checkbox-unique-id-81" checked="" />
+									<label class="slds-checkbox__label" for="checkbox-unique-id-81">
+										<span class="slds-checkbox_faux"></span>
+										<span class="slds-form-element__label">Checkbox Label</span>
+										</label>  -->
+                  <br />
+
+                  <!-- US-0009865  -->
+                  <lightning-input
+                    class="Develop_in_Current_Market"
+                    type="checkbox"
+                    label="Develop in Current Market"
+                    checked={developinCurrentMarket}
+                  >
+                  </lightning-input>
+                  <!-- <lightning-combobox class="Develop_in_Current_Market" label="Develop in Current Market"
+										value={developinCurrentMarket} options={developinCurrentMarketOption}
+										onchange={handleChange}></lightning-combobox> -->
+                </div>
+              </div>
+            </div>
+          </lightning-record-view-form>
+          <hr class="horizontal-row" />
+        </div>
+
+        <!-- Mentor Matching -->
+        <template if:false={hideMentorMatching}>
+          <c-tms-mentor-matching record-id={recordId}></c-tms-mentor-matching>
+        </template>
+      </template>
+    </template>
+    <!-- Create Development Activities -->
+  </template>
+</template>

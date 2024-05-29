@@ -1,0 +1,82 @@
+<template>
+
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+    </template>
+
+    <!-- Render once data has loaded -->
+    <template if:true={pageReady}> 
+         
+        <template if:false={hasPageAccess}>	
+		
+
+			<br><h1><b>You do not have access to the data on this page.</b></h1>
+            
+
+		</template>
+
+        <template if:true={hasPageAccess}>	
+            <h1 style="font-size: 16pt;">Priorities</h1>
+
+        <!-- Show the list of priorities -->
+        <template if:true={showList}>
+
+            <!-- Tabs-->
+            <!-- <lightning-tabset active-tab-value={defaultTab}> -->
+
+                <!-- Priorities -->
+                <!-- <lightning-tab label="Priorities" value="priorities" onactive={handleActiveTab}> -->
+                    <c-tms-my-priorities
+                        record-id={recordId}
+                        talent-profile-id={talentProfileId}
+                        selected-filters={prioritySelectedFilters}
+                        sort-field={prioritySortField}
+                        sort-direction={prioritySortDirection}
+                        onfilterchange={handleFilterChange}
+                        onsortchange={handleSortChange}
+                        onnewpriority={handleNewPriority}
+                        onassignpriority={handleAssignPriority}
+                        onselect={handlePrioritySelect}
+                        onflow={handleFlow}
+                    ></c-tms-my-priorities>
+                <!-- </lightning-tab> -->
+
+                <!-- Annual e3 Conversations -->
+                <!-- <lightning-tab label="Annual e3 Conversations" value="annualE3" onactive={handleActiveTab}> -->
+                    <!-- <c-tms-my-annual-e3 talent-profile-id={talentProfileId}></c-tms-my-annual-e3> -->
+                <!-- </lightning-tab> -->
+
+            <!-- </lightning-tabset> -->
+
+        </template>
+
+        <!-- Show the data entry form -->
+        <template if:true={showPriorityForm}>
+
+            <div class="slds-var-m-top_small slds-var-m-bottom_small">
+                <lightning-button label="&lt; &lt; Back to Career Plan" variant="brand" onclick={handleBackToList}></lightning-button>
+            </div>				
+
+            <c-tms-create-and-assign-priority talent-profile-id={talentProfileId} mode={priorityFormMode} record-id={recordId} onedit={handlePriorityEdited}></c-tms-create-and-assign-priority>
+
+        </template>
+
+        <!-- Show the priority details -->
+        <template if:true={showPriorityDetails}>
+
+            <div class="slds-var-m-top_small slds-var-m-bottom_small">
+                <lightning-button label="&lt; &lt; Back to Career Plan" variant="brand" onclick={handleBackToList}></lightning-button>
+            </div>
+
+            <c-tms-priorities-detail talent-profile-id={talentProfileId} record-id={recordId} onedit={handleEditPriority}></c-tms-priorities-detail>
+
+        </template>
+			
+		</template>
+            	
+        
+
+    </template>
+
+</template>

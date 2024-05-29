@@ -1,0 +1,82 @@
+<template>  
+    <div class="slds-box slds-theme_default">  
+        <div class="slds-theme_default">
+            <div class="slds-p-around_medium">
+                <lightning-progress-indicator type="path" current-step={selectedStep}>
+                    <lightning-progress-step label="Stage1" value="account" onclick={selectStepAccount}></lightning-progress-step>
+                    <lightning-progress-step label="Stage2" value="contact" onclick={selectStepContact}></lightning-progress-step>
+                    <lightning-progress-step label="Stage3" value="opportunity" onclick={selectStepOpportunity}></lightning-progress-step>
+                    <lightning-progress-step label="File Upload" value="FileUpload" onclick={selectStepFileUpload}></lightning-progress-step>
+                </lightning-progress-indicator>
+    
+               
+            </div>
+            </div>
+
+            <template if:true={hasError}>
+                <div class="slds-text-color_error">Please fill in all required fields before proceeding.</div>
+            </template>
+           
+      <template if:true={isAccountStep}>
+        <div class="form-group">
+            <lightning-input type="date" label="StartDate" onchange={onDateChange}></lightning-input> 
+        </div>
+        <div class="form-group">
+            <lightning-input type="date" label="EndDate" onchange={onEndDateChange}></lightning-input> 
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="SpecialTerms" onchange={onTermChange}></lightning-input> 
+        </div>
+        <div class="form-group">
+            <lightning-input type="Number" label="ContractNumber" onchange={onNumberChange}></lightning-input> 
+        </div>
+      </template>
+      
+      <template if:true={isContactStep}>
+        <div class="form-group">
+            <lightning-input type="text" label="Status" onchange={onStatusChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="Number" label="ContractTerm" onchange={onContrectChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="text" label="Description" onchange={onDescriptionChange}></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-input type="pikclist" label="OwnerExpirationNotice" onchange={onOwnerChange}></lightning-input>
+        </div>
+      </template>
+      SELECT Id, , , , BillingPostalCode, BillingCountry, 
+      Status, , , , BillingAddress, ,
+        FROM Contract
+      <template if:true={isOpportunityStep}>
+        <div class="form-group">
+            <lightning-input type="text" label="BillingCity" onchange={onCityChange}></lightning-input>
+        </div>
+        <div class="form-group">
+        <lightning-textarea name="text" label="BillingState" onchange={onStateChange}></lightning-textarea> 
+        </div>
+        <div class="form-group">
+            <lightning-textarea name="text" label="BillingPostalCode" onchange={onPostalChange}></lightning-textarea> 
+            </div>
+            <div class="form-group">
+                <lightning-textarea name="text" label="BillingCountry" onchange={onCountryChange}></lightning-textarea> 
+                </div>
+
+      </template>
+
+      <template if:true={isFileUpload}>
+        <div class="form-group">
+            <lightning-input type="file" onchange={onFileUpload} required name="uploadFile" label="Upload File">  
+            </lightning-input>  
+        </div>
+      </template>
+      
+        <div class="slds-m-vertical_medium">
+            <lightning-button label="Next" onclick={nextStep}></lightning-button>
+            <lightning-button label="Previous" onclick={previousStep}></lightning-button>  
+        <lightning-button label="Save" onclick={saveContact}>  
+        </lightning-button>  
+      </div>  
+    </div>  
+  </template>

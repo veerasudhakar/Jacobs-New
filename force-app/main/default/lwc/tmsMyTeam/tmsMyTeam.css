@@ -1,0 +1,24 @@
+/* Import community CSS */
+@import 'c/tmsCommunityCSS';
+
+.card-open-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.card-open-container {
+    cursor: pointer;
+    color: #0A7DFF;
+}
+
+.learn-tab {
+    position: relative; 
+    top: 28px;
+    left: 748px;
+}
+
+.max-context{
+    width: 96%;
+    margin-left: 100%;
+    
+}

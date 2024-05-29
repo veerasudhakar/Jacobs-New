@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Record Selection">
+    <lightning-record-picker
+                label="Choose a Record"
+                 placeholder="Search Account..."
+                object-api-name="Account"
+                value={selectedRecordId}
+                onchange={handleRecordSelection}
+                size="large"
+                icon-name="standard:Account"
+                variant="label-hidden"
+    ></lightning-record-picker>
+    <lightning-input type="text" variant="standard" name="lastName" label="lastName" onchange={handleChange} placeholder="type lastName here..."></lightning-input>
+    <lightning-button variant="brand" label="create contact" title="titleName" onclick={handlecreaterelatedContact}></lightning-button>
+    </lightning-card>
+    </template>

@@ -1,0 +1,113 @@
+<template>
+	<lightning-record-edit-form record-id={recordid} object-api-name="Sport__c" onsuccess={handleSuccess}>
+		<lightning-accordion class="example-accordion" allow-multiple-sections-open>
+			<lightning-accordion-section name="Sports" label="Sports Events">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Are u Like Ipl ?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_u_Like_IPL__c" name='showIPLFields' variant="label-hidden"
+							onchange={handleIPLChange} required> </lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={showIPLFields}>
+						<!-- Render IPL fields if Yes is selected -->
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>How many Teams are there in IPL ?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="How_many_Teams_is_there_in_IPL__c" required={isshowIPLFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>Which Team are u like more?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="Which_Team_are_u_like_more__c" required={isshowIPLFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>What is the Home ground of Above Team?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="What_is_the_Home_ground_of_Above_Team__c" required={isshowIPLFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<!-- Include other IPL fields here -->
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+			<lightning-accordion-section name="RCB" label="RCB Team Details">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Do you like RCB ?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_u_like_RCB__c" class="associateValue" value={associateValue}
+							variant="label-hidden" name="showRCBFields" onchange={handleIPLChange} required>
+						</lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={showRCBFields}>
+						<!-- Render RCB fields if Yes is selected -->
+						
+                        
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>Who is Your favorite player in RCB ?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="Who_is_Your_fav_player_in_the_team__c" required={isshowRCBFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <label>Who is Your favorite oversys Player in Rcb?<abbr class="slds-required"
+                                title="required">*</abbr></label>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <lightning-input-field field-name="who_is_Your_fav_overseys_player__c" required={isshowRCBFieldsrequired
+                            variant="label-hidden"> </lightning-input-field>
+                    </lightning-layout-item>
+
+                       
+                        
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <label>Who is Your favorite Bowler in Rcb?<abbr class="slds-required"
+                                title="required">*</abbr></label>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <lightning-input-field field-name="who_is_Your_fav_bower_in_Rcb__c" required={isshowRCBFieldsrequired
+                            variant="label-hidden"> </lightning-input-field>
+                    </lightning-layout-item>
+						<!-- Include other RCB fields here -->
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+		</lightning-accordion>
+		<div class="slds-align_absolute-center">
+			<lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update" label="Save & Next">
+			</lightning-button>
+		</div>
+	</lightning-record-edit-form>
+</template>

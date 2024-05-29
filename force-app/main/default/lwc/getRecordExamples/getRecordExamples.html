@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="LDS with @wire, get records (uiRecordApi)">
+      <div class="slds-p-horizontal_small">
+        <template lwc:if={accData}>
+          <div>Name: - {accData.Name.value}</div>
+          <div>Website:- {accData.Website.value}</div>
+          <div>Phone:- {accData.Phone.value}</div>
+          <div>Industry:- {accData.Industry.value}</div>
+        </template>
+      </div>
+    </lightning-card>
+  </template>

@@ -1,0 +1,76 @@
+<template>
+	<lightning-card>
+		
+	<div class="slds-p-around_medium">
+		
+		<template if:true={isModalOpen}>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+			<div class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<h2 class="slds-text-heading_medium">New Contact</h2>
+					</div>
+					<div class="slds-modal__content slds-p-around_medium">
+
+						<h2 style="background-color: #ebe8e8;font-size: larger; padding-inline-start: 7px; border-radius: 5px;">Contact Information</h2>
+
+						<div class="slds-grid slds-gutters" style="margin-inline: 4px">
+							<div class="slds-col slds-size_1-of-2" >
+								<lightning-input label="First Name" value={firstName} onchange={handleFirstNameChange}>
+								</lightning-input>
+
+								<lightning-input label="Phone" type="tel" value={phone} onchange={handlePhoneChange}>
+								</lightning-input>
+
+								<lightning-input label="Department" value={department}
+									onchange={handleDepartmentChange}>
+								</lightning-input>
+
+								<lightning-combobox label="Lead Source" value={leadSource} options={leadSourceOptions}
+									onchange={handleLeadSourceChange}>
+								</lightning-combobox>
+							</div>
+
+							<div class="slds-col slds-size_1-of-2" >
+								<lightning-input label="Last Name" value={lastName} onchange={handleLastNameChange} required>
+								</lightning-input>
+
+								<lightning-input label="Email" type="email" value={email} onchange={handleEmailChange}>
+								</lightning-input>
+
+								<lightning-input label="Birthday" type="date" value={birthday}
+									onchange={handleBirthdayChange}>
+								</lightning-input>
+
+								<lightning-record-picker label="Account Name" placeholder="Search..."
+									selected-record-id={accountId} value={accountId} onchange={handleAccountChange}
+									object-api-name="Account">
+								</lightning-record-picker>
+
+							</div>
+						</div>
+
+						
+
+						<h2 style="background-color: #ebe8e8; margin-top: 25px;font-size: larger;padding-inline-start: 7px; border-radius: 5px;">Description Information</h2>
+						<div class="slds-grid slds-gutters" style="margin-inline: 4px">
+							<div class="slds-col slds-size_2-of-2">
+								<lightning-textarea label="Description" value={description}
+									onchange={handleDescriptionChange}></lightning-textarea>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="slds-modal__footer ">
+						<div class="slds-align_absolute-center" style="margin-left: -29px">
+						<lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_small"></lightning-button>
+						<lightning-button label="Save" variant="brand" onclick={saveContact}></lightning-button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+	</div>
+	</lightning-card>
+</template>

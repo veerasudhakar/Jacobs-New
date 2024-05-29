@@ -1,0 +1,74 @@
+<template>  
+   <lightning-card variant="Narrow" if:false={Maincomponent} title="Bulk creation of Vendor Records" icon-name="standard:account">
+       <lightning-button label="Create a Vendor record" variant="neutral" title="Create a Venodr record" onclick={handleClicktoopen}></lightning-button>
+   </lightning-card>
+  
+   <template if:true={Maincomponent}>
+       <lightning-card title="Manage Vendor records">
+           <lightning-button label="Add Row" slot="actions" icon-name="utility:add" onclick={addRow}></lightning-button>
+                       <lightning-button label="Clear All Rows" slot="actions" icon-name="utility:delete" onclick={clearall}></lightning-button>
+           <template if:true={Addrow}>
+               <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none modalBodyy">
+                   <template if:true={isLoading}>
+                       <lightning-spinner alternative-text="Loading" size="medium" class="spinnerClass"></lightning-spinner>
+                   </template>
+                   <lightning-card>
+                       <div class="slds-m-around_medium">
+                           <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                               <thead>
+                                   <tr class="slds-line-height_reset">
+                                       <th class="" scope="col">
+                                           <div class="slds-truncate" title="Vendor Name"> Name</div>
+                                       </th>
+                                       <th class="" scope="col">
+                                           <div class="slds-truncate" title="Account">Account</div>
+                                       </th>
+                                       <th class="" scope="col">
+                                           <div class="slds-truncate" title="Opportunity">Opportunity</div>
+                                       </th>
+                                       <th class="" scope="col">
+                                           <div class="slds-truncate" title="Amount">Amount</div>
+                                       </th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <template for:each={records} for:item="obj" for:index="index">
+                                       <tr class="inputRows" key={obj.Id}>
+                                           <th data-label="Vendor Name" scope="row">
+                                               <lightning-input type="text" class="fields" variant="label-hidden" label="Vendor Name" name="Name" value={obj.Name} data-id={index} onchange={handleName} required></lightning-input>
+                                               <div if:true={obj.NameError} class="slds-text-color_error">{obj.NameError}</div>
+                                           </th>
+                                           <td data-label="Account">
+                                               <lightning-record-edit-form object-api-name="Vendor__c">
+                                                   <lightning-messages></lightning-messages>
+                                                   <lightning-input-field field-name="Account__c" value={obj.Account__c} variant="label-hidden"></lightning-input-field>
+                                               </lightning-record-edit-form>
+                                           </td>
+                                           <td data-label="Opportunity">
+                                               <lightning-record-edit-form object-api-name="Vendor__c">
+                                                   <lightning-messages></lightning-messages>
+                                                   <lightning-input-field field-name="Opportunity__c" value={obj.Opportunity__c}  variant="label-hidden"></lightning-input-field>
+                                               </lightning-record-edit-form>
+                                           </td> 
+                                           <td data-label="Email">
+                                               <lightning-input type="text" class="fields" variant="label-hidden" label="Amount" name="Amount" value={obj.Amount} data-id={index} onchange={handleEmail} required></lightning-input>
+                                               <div if:true={obj.EmailError} class="slds-text-color_error">{obj.EmailError}</div>
+                                           </td>
+                                           <td data-label="Prospecting">
+                                               <lightning-button-icon icon-name="action:delete" alternative-text="Delete" title="Delete" data-id={obj.Id} onclick={handleDeleteAction}></lightning-button-icon>
+                                           </td>
+                                       </tr>
+                                   </template>
+                               </tbody>
+                           </table>
+                       </div>
+                   </lightning-card>
+               </div>
+               <div slot="footer">
+                   <lightning-button variant="brand" label="Cancel" onclick={closeAction}></lightning-button> &nbsp;
+                   <lightning-button variant="success" label="Save" onclick={handleInsertAction} ></lightning-button>
+               </div>
+           </template>
+       </lightning-card>
+   </template>
+</template>

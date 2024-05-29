@@ -1,0 +1,114 @@
+<template>
+	<lightning-record-edit-form record-id={recordid} object-api-name="Sport__c" onsuccess={handleSuccess}>
+		<lightning-accordion class="example-accordion" allow-multiple-sections-open>
+			<lightning-accordion-section name="Sports" label="Others Team">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Are u like Any other team?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_u_like_Any_other_team__c" name='otherdata' variant="label-hidden"
+							onchange={handleOtherChange} required> </lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={otherdata}>
+						<!-- Render IPL fields if Yes is selected -->
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>Which is that team?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="Which_is_that_team__c" required={isotherFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>what is that team Home Ground?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="what_is_that_team_Home_Ground__c" required={isotherFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>who is ur fav player?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="who_is_ur_fav_player__c" required={isotherFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+						<!-- Include other IPL fields here -->
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+			<lightning-accordion-section name="Captain" label="Captain">
+				<lightning-layout multiple-rows>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<label>Are u like the captain?<abbr class="slds-required" title="required">*</abbr></label>
+					</lightning-layout-item>
+					<lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6"
+						large-device-size="3">
+						<lightning-input-field field-name="Are_u_like_the_captain__c" class="captainValue" value={captainValue}
+							variant="label-hidden" name="Captaindata" onchange={handleOtherChange} required>
+						</lightning-input-field>
+					</lightning-layout-item>
+					<template if:true={Captaindata}>
+						<!-- Render RCB fields if Yes is selected -->
+						
+                        
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<label>who is the owner of this team?<abbr class="slds-required"
+									title="required">*</abbr></label>
+						</lightning-layout-item>
+						<lightning-layout-item size="12" padding="around-small" small-device-size="3"
+							medium-device-size="6" large-device-size="3">
+							<lightning-input-field field-name="who_is_the_owner_of_this_team__c" required={iscaptainFieldsrequired}
+								variant="label-hidden"> </lightning-input-field>
+						</lightning-layout-item>
+
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <label>How many centuries he have in this Team?<abbr class="slds-required"
+                                title="required">*</abbr></label>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <lightning-input-field field-name="How_many_centuries_he_have_in_this_Team__c" required={iscaptainFieldsrequired}
+                            variant="label-hidden"> </lightning-input-field>
+                    </lightning-layout-item>
+
+                       
+                        
+                        <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <label>Who is the Hard Core Fans of this Team?<abbr class="slds-required"
+                                title="required">*</abbr></label>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small" small-device-size="3"
+                        medium-device-size="6" large-device-size="3">
+                        <lightning-input-field field-name="Who_is_the_Hard_Core_Fans_of_this_Team__c" required={iscaptainFieldsrequired}
+                            variant="label-hidden"> </lightning-input-field>
+                    </lightning-layout-item>
+						<!-- Include other RCB fields here -->
+					</template>
+				</lightning-layout>
+			</lightning-accordion-section>
+		</lightning-accordion>
+		<div class="slds-align_absolute-center">
+            <lightning-button variant="brand" label="Previous" title="Previous" class="slds-m-around_x-small" onclick={handlePrevious}></lightning-button>
+			<lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update" label="Save & Next">
+			</lightning-button>
+		</div>
+	</lightning-record-edit-form>
+</template>
